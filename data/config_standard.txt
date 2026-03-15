@@ -365,7 +365,7 @@
   "settings_sort_map_layers": false,
   "settings_add_overlay_wmthiking": true,
   "settings_add_overlay_wmtcycling": true,
-  "settings_add_overlay_wmtmtb": true,  
+  "settings_add_overlay_wmtmtb": true,
   "settings_pq_splitter_pqname": "PQ_Splitter_",
   "settings_pq_splitter_how_often": 2,
   "settings_pq_splitter_not_ignored": false,
