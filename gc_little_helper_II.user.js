@@ -4745,6 +4745,8 @@ var mainGC = function() {
             let css = '';
             // Enlarge the date field so that everything is visible also in trackable logs.
             css += '.gc-date-picker {min-width: 122px;}';
+            // Show warning message due to unsaved changes without minimum width.
+            css += '#dialog-header {min-width: unset !important;}';
 
             // Have we changed the logtext?
             let keepGClhChanges = false;
