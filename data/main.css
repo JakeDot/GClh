@@ -1,7 +1,13 @@
 /* Make GC header invisible. */
+#gc-header-root,
 #gc-header,
 #GCHeader,
 #gc-mobile-nav {
+    display: none;
+}
+
+/* Make dummy GS header invisible */
+.content-empty {
     display: none;
 }
 

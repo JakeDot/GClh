@@ -1686,15 +1686,15 @@ var mainGC = function() {
         }
     } catch(e) {gclh_error("F2, F4, F10 keys",e);}
 
-// Wait for new header and build up old header.
+// Wait for body and build up old header.
     tlc('START MutationObserver');
     try {
         const obs = new MutationObserver(() => {
-            if ($('#gc-header, #GCHeader')[0] && !$('#ctl00_gcNavigation')[0]) {
+            if ($('body')[0] && !$('#ctl00_gcNavigation')[0]) {
                 obs.disconnect();
-                tlc('Header found');
+                tlc('Body found');
                 // Integrate old header.
-                ($('#gc-header') || $('#GCHeader')).after(header_old);
+                $('body').prepend(header_old);
                 // Run header relevant features.
                 tlc('START setUserParameter');
                 setUserParameter();
@@ -1733,13 +1733,6 @@ var mainGC = function() {
             }
         });
         obs.observe(document.documentElement, { childList: true, subtree: true });
-        // Safeguard to finish observer after 20s, throw error if no header could be found.
-        setTimeout(() => {
-            obs.disconnect();
-            if (!$('#ctl00_gcNavigation')[0]) {
-                console.error('GClh_ERROR (no header alert) - Wait for header and build up header: Timeout detecting header');
-            }
-        }, 20000);
     } catch (e) { gclh_error("Wait for new header and build up old header", e); }
 
 // Set user avatar, user and found count in new header.
