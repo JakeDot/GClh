@@ -2804,6 +2804,7 @@ var mainGC = function() {
                     + ".add-list li button {font-size: 14px !important; margin: 0 !important; height: 18px !important;}"
                     + ".status {font-size: 14px !important; width: unset !important;}"
                     + ".status.success, .success-message {right: 2px !important; padding: 0 5px !important; background-color: white !important; color: #E0B70A !important;}"
+                    + ".input-control .status.success {padding: 10px 10px 0px 10px !important;}"
                     + ".CacheDetailNavigation .add_to_list_count {padding-left: 4px; color: inherit;}"
                     + ".icon-premium {margin-bottom: -2px;}";
             // Ugly display in Add to List pop up (GS bug since weeks).
@@ -2828,7 +2829,7 @@ var mainGC = function() {
             if (settings_show_remove_ignoring_link || settings_improve_add_to_list) {
                 if ($('.btn-add-to-list').attr('data-href') && $('.btn-add-to-list').attr('data-href').match(/guid=(.*)$/)) {
                     var cacheGuidWptTypeID = $('.btn-add-to-list').attr('data-href').match(/guid=(.*)$/)[1];
-                    getOwnBMLs(cacheGuidWptTypeID);
+                    getOwnBMLs({cacheGuidWptTypeID: cacheGuidWptTypeID});
                 }
             }
         } catch(e) {gclh_error("Get ignore status and count and names of own BMLs of the cache",e);}
@@ -12295,7 +12296,7 @@ var mainGC = function() {
                     // Get count and names of own BMLs of the cache.
                     if ($(text).find('.btn-add-to-list') && $(text).find('.btn-add-to-list').attr('data-href') && $(text).find('.btn-add-to-list').attr('data-href').match(/guid=(.*)$/) && !global_isBasic) {
                         var cacheGuidWptTypeID = $(text).find('.btn-add-to-list').attr('data-href').match(/guid=(.*)$/)[1];
-                        getOwnBMLs(cacheGuidWptTypeID, local_gc_code);
+                        getOwnBMLs({cacheGuidWptTypeID: cacheGuidWptTypeID, gcCodeFromSearchMap: local_gc_code});
                     }
 
                     // Show Weekday for Events.
@@ -13565,7 +13566,7 @@ var mainGC = function() {
                                     // Get count and names of own BMLs of the cache.
                                     if ($('.btn-add-to-list').attr('href') && $('.btn-add-to-list').attr('href').match(/guid=(.*)$/)) {
                                         var cacheGuidWptTypeID = $('.btn-add-to-list').attr('href').match(/guid=(.*)$/)[1];
-                                        getOwnBMLs(cacheGuidWptTypeID);
+                                        getOwnBMLs({cacheGuidWptTypeID: cacheGuidWptTypeID, gcCodeFromBrowseMap: local_gc_code});
                                     }
                                 }
                             }
@@ -16434,17 +16435,8 @@ var mainGC = function() {
         else return "";
     }
 
-// Build Search Map buffer for count and names of own BMLs of the cache and display it.
-    function buildAddToListBufferForSearchMap(text, list, count, gc_code) {
-        if (typeof(sidebar_enhancements_addToList_buffer) != 'object') return;
-        sidebar_enhancements_addToList_buffer[gc_code] = $('<span class="ownBMLsCount" title="' + list + '"> (' + count + ')</span>')[0];
-        if ($('.cache-metadata-code')[0] && gc_code == $('.cache-metadata-code')[0].innerHTML && $('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"] span')[0]) {
-            $('.ownBMLsCount').each(function(){removeElement(this);});
-            $('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"] span')[0].append(sidebar_enhancements_addToList_buffer[gc_code]);
-        }
-    }
 // Get ignore status and count and names of own BMLs of a cache.
-    function getOwnBMLs(cacheGuidWptTypeID, gcCodeFromSearchMap) {
+    function getOwnBMLs({cacheGuidWptTypeID, gcCodeFromSearchMap, gcCodeFromBrowseMap}) {
         if (!cacheGuidWptTypeID || cacheGuidWptTypeID == '') return;
         var count = 0;
         var text = '';
@@ -16457,10 +16449,8 @@ var mainGC = function() {
                     if ($(this).find('a[href*="/plan/lists/BM"]')[0].innerHTML == 'Ignore List') {
                         ignore = true;
                     } else {
-                        if (!ary.includes($(this).find('a[href*="/plan/lists/BM"]')[0].innerHTML)) {
-                            count++;
-                            ary.push($(this).find('a[href*="/plan/lists/BM"]')[0].innerHTML);
-                        }
+                        count++;
+                        ary.push($(this).find('a[href*="/plan/lists/BM"]')[0].innerHTML);
                     }
                 }
             });
@@ -16469,20 +16459,28 @@ var mainGC = function() {
                 list += (list == '' ? '' : '\n') + ary[i];
             }
             text = 'Currently available in ' + count + (count == 1 ? ' own list' : ' own lists');
-            // Search Map call.
             if (gcCodeFromSearchMap) {
-                buildAddToListBufferForSearchMap(text, list, count, gcCodeFromSearchMap);
-            } else {
-                if ($('.gclh_ownBMLs_link')[0]) {
-                    $('.gclh_ownBMLs_link')[0].setAttribute('title', text);
+                if (typeof(sidebar_enhancements_addToList_buffer) == 'object') {
+                    sidebar_enhancements_addToList_buffer[gcCodeFromSearchMap] = $('<span class="ownBMLsCount" title="' + list + '"> (' + count + ')</span>')[0];
+                    if ($('.cache-metadata-code')[0] && gcCodeFromSearchMap == $('.cache-metadata-code')[0].innerHTML && $('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"] span')[0]) {
+                        $('.ownBMLsCount').each(function(){removeElement(this);});
+                        $('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"] span')[0].append(sidebar_enhancements_addToList_buffer[gcCodeFromSearchMap]);
+                    }
                 }
-                if ($('.gclh_ownBMLs_count')[0]) {
-                    $('.gclh_ownBMLs_count')[0].setAttribute('title', list);
-                    $('.gclh_ownBMLs_count')[0].innerHTML = ' (' + count + ')';
-                }
-                if (ignore && settings_show_remove_ignoring_link && $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a')[0]) {
-                    changeIgnoreButton('Stop Ignoring');
-                }
+                return;
+            }
+            if (gcCodeFromBrowseMap && (!$('#gmCacheInfo .code')[0] || ($('#gmCacheInfo .code')[0] && $('#gmCacheInfo .code')[0].innerHTML != gcCodeFromBrowseMap))) {
+                return;
+            }
+            if ($('.gclh_ownBMLs_link')[0]) {
+                $('.gclh_ownBMLs_link')[0].setAttribute('title', text);
+            }
+            if ($('.gclh_ownBMLs_count')[0]) {
+                $('.gclh_ownBMLs_count')[0].setAttribute('title', list);
+                $('.gclh_ownBMLs_count')[0].innerHTML = ' (' + count + ')';
+            }
+            if (ignore && settings_show_remove_ignoring_link && $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a')[0]) {
+                changeIgnoreButton('Stop Ignoring');
             }
         });
     }
