@@ -5423,23 +5423,15 @@ var mainGC = function() {
     }
 
 // Run improve log form, run improve log view.
+    function improveLogFormAndLogView() {
+        if (is_page('logform')) runImproveLogForm();
+        else if (document.location.pathname.match(/\/live\/log\/(?:gl|tl)[a-z0-9]+/i)) runImproveLogView();
+    }
+    // Monitoring for the URL to build and rebuild features for the log form and the log view websites.
     if (document.location.pathname.match(/\/live\/(?:log\/(?:gl|tl)|(?:geocache|trackable)\/(?:gc|tb))[a-z0-9]+/i)) {
-        let url = '';
-        const config = { childList: true, subtree: true };
-        const logviewObserver = new MutationObserver(function(_, observer) {
-            observer.disconnect();
-            if (url !== document.location.pathname) {
-                if (is_page('logform')) runImproveLogForm();
-                else if (document.location.pathname.match(/\/live\/log\/(?:gl|tl)[a-z0-9]+/i)) runImproveLogView();
-            }
-            url = document.location.pathname;
-            observer.observe(document.body, config);
-        });
-        logviewObserver.observe(document.body, config);
-        // Safeguard: if FF loads the page from browser cache then it is already fully loaded at this point,
-        // therefore add a dummy element (and immediately remove it) to force a call to the observer callback.
-        // In Chrome or if one forces a page reload from the server this isn't an issue.
-        $('body').append('<div id="gclh_dummy"></div>'); $('div#gclh_dummy').remove();
+        try {
+            observerForMultiplePages(improveLogFormAndLogView);
+        } catch(e) {gclh_error("Run improve log form, run improve log view.",e);}
     }
 
 // Improve Mail.
@@ -21362,6 +21354,29 @@ var mainGC = function() {
         }
         return undefined;
     };
+
+// Monitoring for the URL to build and rebuild features for multiple page websites.
+// - Der Parameter "callback" enthält die aufzurufende Function, wenn eine URL bemerkt wird (initiale URL oder geänderte URL). Die Function
+//   wird beim Aufruf von observerForMultiplePages ohne Klammern angegeben.
+// - Ein Beispiel gibt es bei "Run improve log form, run improve log view".
+    function observerForMultiplePages(callback) {
+        if (!callback || typeof callback !== 'function') return;
+        let url = '';
+        const config = { childList: true, subtree: true };
+        const urlObserver = new MutationObserver(function(_, observer) {
+            observer.disconnect();
+            if (url !== document.location.pathname) {
+                url = document.location.pathname;
+                callback();
+            }
+            observer.observe(document.body, config);
+        });
+        urlObserver.observe(document.body, config);
+        // Safeguard: If FF loads the page from browser cache then it is already fully loaded at this point,
+        // therefore add a dummy element (and immediately remove it) to force a call to the observer callback.
+        // In Chrome or if one forces a page reload from the server this isn't an issue.
+        $('body').append('<div id="gclh_dummy"></div>'); $('div#gclh_dummy').remove();
+    }
 
 };  // End of mainGC.
 
