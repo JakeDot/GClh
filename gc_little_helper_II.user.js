@@ -2139,6 +2139,7 @@ var mainGC = function() {
                         for (var i = 1; i < menuChilds.length; i += 2) {
                             var separator = document.createElement("li");
                             separator.appendChild(document.createTextNode("|"));
+                            if ($(menuChilds[i-1]).hasClass("mobile")) $(separator).addClass("mobile");
                             menuChilds[i].parentNode.insertBefore(separator, menuChilds[i]);
                         }
                     }
