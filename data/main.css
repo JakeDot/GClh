@@ -685,6 +685,11 @@ table .markdown-output~tr.AlternatingRow td {
     background-color: #e6f7ef;
 }
 
+/* Prevent overflows in preformatted text (HTML pre-tag). */
+pre {
+  white-space: pre-wrap;
+}
+
 /* Config, Sync. */
 .settings_overlay {
     width: 600px;
