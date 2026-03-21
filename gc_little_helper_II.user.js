@@ -1729,6 +1729,12 @@ var mainGC = function() {
                         $('#ctl00_uxLoginStatus_divSignedIn li.li-user').removeClass('gclh_open');
                     }
                 });
+                // On search map, a gray area 80px high appears at the bottom of the page.
+                // To prevent this, we override the “min-height” property, thereby preventing an additional 80px (= header height) from being added to the viewport height.
+                if (is_page("searchmap")) {
+                    try {document.querySelector('#__next > div').style.setProperty("min-height", "calc(100vh - 80px)", "important");}
+                    catch {}
+                }
                 tlc('START OK');
             }
         });
