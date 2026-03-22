@@ -1696,6 +1696,9 @@ var mainGC = function() {
                 tlc('Body found');
                 // Integrate old header.
                 $('body').prepend(header_old);
+                // Reduce z-index for old header on specific pages:
+                // My Lists: It must not be greater than 2000 because of the "more" pop-up.
+                if (is_page('lists')) appendCssStyle('gclh_nav .wrapper {z-index: 2000 !important}');
                 // Run header relevant features.
                 tlc('START setUserParameter');
                 setUserParameter();
