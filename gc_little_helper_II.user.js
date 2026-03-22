@@ -2511,6 +2511,8 @@ var mainGC = function() {
                             lateLog['id'] = $(logs[i]).find('.logOwnerProfileName a[href*="/profile/?guid="], .logOwnerProfileName a[href*="/p/?guid="]').attr('id');
                         }
                         lateLog['src'] = $(logs[i]).find('.LogType img[src*="/images/logtypes/"]').attr('src');
+                        if ($(logs[i]).find('.LogType svg.favoritePoint')[0]) lateLog['fav'] = $(logs[i]).find('.LogType svg.favoritePoint')[0].outerHTML.replace(/(>{1}?)/, ' style="margin-left: unset !important;">');
+                        else lateLog['fav'] = '';
                         lateLog['type'] = $(logs[i]).find('.LogType img[src*="/images/logtypes/"]').attr('title');
                         lateLog['date'] = $(logs[i]).find('.LogDate').text();
                         if (gcLogs) lateLog['log'] = $(logs[i]).find('.LogText').children().clone();
@@ -2548,7 +2550,7 @@ var mainGC = function() {
                             img.title = img.alt = "";
                             var log_text = document.createElement("span");
                             log_text.title = "";
-                            log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "'> <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br>";
+                            log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "' style='vertical-align: sub;'>" + lateLogs[i]['fav'] + " <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br>";
                             a.appendChild(img);
                             for (var j = 0; j < lateLogs[i]['log'].length; j++) {
                                 if (j == 0 && !gcLogs) continue;
@@ -8088,7 +8090,7 @@ var mainGC = function() {
                                 else link = gclh_build_vipvup(user, global_vips, "vip");
                                 // Log-Date and Link.
                                 var log_text = document.createElement("span");
-                                log_text.innerHTML = "<img src='" + log_infos_long[i]["icon"] + "'> <b>" + user + " - " + log_infos_long[i]["date"] + "</b><br>" + log_infos_long[i]["log"];
+                                log_text.innerHTML = "<img src='" + log_infos_long[i]["icon"] + "' style='vertical-align: bottom; margin-right: 0px;'>" + log_infos_long[i]['fav'] + " <b>" + user + " - " + log_infos_long[i]["date"] + "</b><br>" + log_infos_long[i]["log"];
                                 var log_img = document.createElement("img");
                                 var log_link = document.createElement("a");
                                 log_link.setAttribute("href", "javascript:void(0);");
@@ -8100,10 +8102,10 @@ var mainGC = function() {
                                 log_img.setAttribute("src", log_infos_long[i]["icon"]);
                                 log_img.setAttribute("border", "0");
                                 log_img.setAttribute("style", "vertical-align: sub;");
+                                log_link.appendChild(log_img);
+                                log_link.appendChild(document.createTextNode("   "));
                                 log_link.appendChild(document.createTextNode(log_infos_long[i]["date"]));
                                 log_link.appendChild(log_text);
-                                list.appendChild(log_img);
-                                list.appendChild(document.createTextNode("   "));
                                 list.appendChild(log_link);
                                 list.appendChild(document.createTextNode("   "));
                                 list.appendChild(span);
@@ -8145,7 +8147,7 @@ var mainGC = function() {
                                     if (log_infos[user][x]["icon"].match(/\/(2|10|11)\.png$/)) users_found.push(user);  // Für not found liste.
                                     var image = document.createElement("img");
                                     var log_text = document.createElement("span");
-                                    log_text.innerHTML = "<img src='" + log_infos[user][x]["icon"] + "'> <b>" + user + " - " + log_infos[user][x]["date"] + "</b><br>" + log_infos[user][x]["log"];
+                                    log_text.innerHTML = "<img src='" + log_infos[user][x]["icon"] + "' style='vertical-align: bottom; margin-right: 0px;'>" + log_infos[user][x]['fav'] + " <b>" + user + " - " + log_infos[user][x]["date"] + "</b><br>" + log_infos[user][x]["log"];
                                     image.setAttribute("src", log_infos[user][x]["icon"]);
                                     image.setAttribute("border", "0");
                                     if (log_infos[user][x]["date"]) {
@@ -9336,6 +9338,8 @@ var mainGC = function() {
                                     if (!log_infos[user]) log_infos[user] = new Array();
                                     log_infos[user][index] = new Object();
                                     log_infos[user][index]["icon"] = "/images/logtypes/" + json.data[i].LogTypeImage;
+                                    if (json.data[i].FavoritePointUsed) log_infos[user][index]["fav"] = '<svg class="favoritePoint" style="vertical-align: bottom; margin-left: unset !important;" height="16" width="16"><use href="#heart_cache_favorited--inline"></use></svg>';
+                                    else log_infos[user][index]["fav"] = '';
                                     log_infos[user][index]["id"] = json.data[i].LogID;
                                     log_infos[user][index]["date"] = json.data[i].Visited;
                                     log_infos[user][index]["log"] = json.data[i].LogText;
@@ -9343,6 +9347,7 @@ var mainGC = function() {
                                     log_infos_long[index] = new Object();
                                     log_infos_long[index]["user"] = user;
                                     log_infos_long[index]["icon"] = "/images/logtypes/" + json.data[i].LogTypeImage;
+                                    log_infos_long[index]["fav"] = log_infos[user][index]["fav"];
                                     log_infos_long[index]["id"] = json.data[i].LogID;
                                     log_infos_long[index]["date"] = json.data[i].Visited;
                                     log_infos_long[index]["log"] = json.data[i].LogText;
@@ -12100,6 +12105,8 @@ var mainGC = function() {
                         var lateLog = new Object();
                         lateLog['user'] = initalLogs['data'][i].UserName;
                         lateLog['src']  = '/images/logtypes/' + initalLogs['data'][i].LogTypeImage;
+                        if (initalLogs['data'][i].FavoritePointUsed) lateLog['fav'] = '<img src="/images/icons/fave_fill_16.png" style="vertical-align: bottom; margin-left: 1px; margin-right: 0px;" height="16" width="16">';
+                        else lateLog['fav'] = '';
                         lateLog['type'] = initalLogs['data'][i].LogType;
                         lateLog['date'] = initalLogs['data'][i].Visited;
                         lateLog['log']  = initalLogs['data'][i].LogText;
@@ -12123,7 +12130,7 @@ var mainGC = function() {
                             img.src = lateLogs[i]['src'];
                             var log_text = document.createElement("span");
                             log_text.title = "";
-                            log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "'> <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br>" + lateLogs[i]['log'];
+                            log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "' style='vertical-align: bottom; margin-right: 0px;'>" + lateLogs[i]['fav'] + " <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br>" + lateLogs[i]['log'];
                             div_log_wrapper.appendChild(img);
                             div_log_wrapper.appendChild(log_text);
                             inner_div.appendChild(div_log_wrapper);
@@ -13413,6 +13420,8 @@ var mainGC = function() {
                                 var lateLog = new Object();
                                 lateLog['user'] = initalLogs['data'][i].UserName;
                                 lateLog['src']  = '/images/logtypes/' + initalLogs['data'][i].LogTypeImage;
+                                if (initalLogs['data'][i].FavoritePointUsed) lateLog['fav'] = '<img src="/images/icons/fave_fill_16.png" style="vertical-align: bottom; margin-left: 1px; margin-right: 0px;" height="16" width="16">';
+                                else lateLog['fav'] = '';
                                 lateLog['type'] = initalLogs['data'][i].LogType;
                                 lateLog['date'] = initalLogs['data'][i].Visited;
                                 lateLog['log']  = initalLogs['data'][i].LogText;
@@ -13437,7 +13446,7 @@ var mainGC = function() {
                                     img.setAttribute("style", "padding-left: 2px; vertical-align: bottom; float:left;");
                                     var log_text = document.createElement("span");
                                     log_text.title = "";
-                                    log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "'> <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br>" + lateLogs[i]['log'];
+                                    log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "' style='vertical-align: bottom; margin-right: 0px;'>" + lateLogs[i]['fav'] + " <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br>" + lateLogs[i]['log'];
                                     div_log_wrapper.appendChild(img);
                                     div_log_wrapper.appendChild(log_text);
                                     inner_div.appendChild(div_log_wrapper);
