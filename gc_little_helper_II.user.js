@@ -2328,6 +2328,33 @@ var mainGC = function() {
         appendCssStyle(css);
     }
 
+// Relocate a specific GS <style> directly before all other style elements.
+// This ensures that the later applied gclh rules "win", since later applied styles take precedence over previous applied ones.
+// Otherwise, this specific GS style interferes with the gclh styles for config and page width.
+    if (is_page("cache_listing")) {
+        try {
+            // This rule is included in the GS style and is used to identify it.
+            const rule = '.container{width:970px}';
+            function relocateMatchingStyles() {
+                let $styles = $('style').filter(function() {
+                    return this.textContent.indexOf(rule) !== -1;
+                });
+                if ($styles[0]) {
+                    $styles.insertBefore('head style:first');
+                    return true;
+                }
+                return false;
+            }
+            // If the style is already present, move it, otherwise observe the page for future <style> nodes.
+            if (!relocateMatchingStyles()) {
+                const styleObserver = new MutationObserver(function() {
+                    if (relocateMatchingStyles()) styleObserver.disconnect();
+                });
+                styleObserver.observe(document.documentElement, {childList: true, subtree: true});
+            }
+        } catch(e) {gclh_error("Moving style element",e);}
+    }
+
 // Disabled and archived ...
     if (is_page("cache_listing")) {
         try {
