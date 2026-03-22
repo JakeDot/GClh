@@ -12749,8 +12749,10 @@ var mainGC = function() {
             }
             checkBrowseMap(0);
             var css = '';
-            // Damit auch mehr als 2 Buttons handlebar.
+            // Damit auch mehr als 2 rechte Buttons handlebar.
             css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
+            // Improve the first scale line on the left side.
+            css += '.leaflet-control-scale-line:first-child {box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2) !important;}';
             // Improve clickability on list names of add to list pop up.
             css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
             // Enable Linklist, config and sync scrolling on Browse Map.
