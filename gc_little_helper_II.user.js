@@ -757,6 +757,7 @@ var variablesInit = function(c) {
     c.settings_public_profile_smaller_privacy_btn = getValue("settings_public_profile_smaller_privacy_btn", false);
     c.settings_searchmap_improve_add_to_list = getValue("settings_searchmap_improve_add_to_list", true);
     c.settings_searchmap_improve_add_to_list_height = getValue("settings_searchmap_improve_add_to_list_height", 130);
+    c.settings_browsemap_improve_add_to_list = getValue("settings_browsemap_improve_add_to_list", true);
     c.settings_improve_notifications = getValue("settings_improve_notifications", true);
     c.settings_dim_lost_trackables = getValue("settings_dim_lost_trackables", false);
     c.settings_remove_target_log_form = getValue("settings_remove_target_log_form", false);
@@ -1015,8 +1016,8 @@ var mainPGC = function() {
             html += '<span>The secondary email will only work if you have two or more email addresses in your profile.</span></p>';
             html += '<p><input id="include_pq_name_' + table_index + '" class="include_pq_name" type="checkbox" ' + (settings_pq_splitter_include_pq_name ? "checked=''" : "") + '"><label for="include_pq_name_' + table_index + '">Include pocket query name in download file name</label></p>';
             html += '<h5>Instruction:</h5>';
-            html += '<p>If you click the "Create PQ(s)" button, the GC little helper II will open as many pop ups as PQs should be created. The number of simultaneously loaded pop ups is limited to 5. All PQs will get the name that you entered in the field above and an ongoing digit prefix. The pop ups close by themselves after the associated PQ has been created. We will display a message if all PQs are created. Please wait until all pop ups are loaded. </p>';
-            html += '<p>Please make sure you do not have a pop up blocker enabled. Otherwise this feature will not work as expected. How to change pop up blocker settings in browser <a href="https://support.mozilla.org/kb/pop-blocker-settings-exceptions-troubleshooting" target="_blank">Mozilla Firefox</a>, <a href="https://support.google.com/chrome/answer/95472" target="_blank">Google Chrome</a>.</p>';
+            html += '<p>If you click the "Create PQ(s)" button, the GC little helper II will open as many pop-ups as PQs should be created. The number of simultaneously loaded pop-ups is limited to 5. All PQs will get the name that you entered in the field above and an ongoing digit prefix. The pop-ups close by themselves after the associated PQ has been created. We will display a message if all PQs are created. Please wait until all pop-ups are loaded. </p>';
+            html += '<p>Please make sure you do not have a pop-up blocker enabled. Otherwise this feature will not work as expected. How to change pop-up blocker settings in browser <a href="https://support.mozilla.org/kb/pop-blocker-settings-exceptions-troubleshooting" target="_blank">Mozilla Firefox</a>, <a href="https://support.google.com/chrome/answer/95472" target="_blank">Google Chrome</a>.</p>';
             html += '<p>This is a feature of GC little helper II.</p>';
             html += '</td></tr></tfoot>';
             $(side).append(html);
@@ -1208,7 +1209,7 @@ var mainPGC = function() {
                     // A pop up could not be opened in browser, probably because of a pop up blocker, so we'll stop here and inform the user.
                     if (global_open_popups[i] == null) {
                         setRunSettings(false);
-                        alert("A pop up blocker was detected. Please allow pop ups for this site, reload the page and try again. Please be aware, that the first two PQs should already be created. So please go to geocaching.com and delete them.");
+                        alert("A pop-up blocker was detected. Please allow pop-ups for this site, reload the page and try again. Please be aware, that the first two PQs should already be created. So please go to geocaching.com and delete them.");
                         return false;
                     }
                     global_open_popup_count++;
@@ -2829,44 +2830,15 @@ var mainGC = function() {
         $(link)[0].style.backgroundImage = (buttonSetTo == 'Ignore' ? 'url(/images/icons/16/ignore.png)' : 'url('+global_stop_ignore_icon+')');
     }
 
-// Improve Add to list in cache listing.
-    if (is_page("cache_listing") && settings_improve_add_to_list && $('.btn-add-to-list')[0] && !global_isBasic) {
+// Improve Add to List and Ignore Button in cache listing.
+    if (is_page("cache_listing")) {
         try {
-            var height = ((parseInt(settings_improve_add_to_list_height) < 100) ? parseInt(100) : parseInt(settings_improve_add_to_list_height));
-            var css = ".add-list {max-height: " + height + "px !important;}"
-                    + ".add-list li {padding: 2px 0 !important;}"
-                    + ".add-list li button {font-size: 14px !important; margin: 0 !important; height: 18px !important;}"
-                    + ".status {font-size: 14px !important; width: unset !important;}"
-                    + ".status.success, .success-message {right: 2px !important; padding: 0 5px !important; background-color: white !important; color: #E0B70A !important;}"
-                    + ".input-control .status.success {padding: 10px 10px 0px 10px !important;}"
-                    + ".CacheDetailNavigation .add_to_list_count {padding-left: 4px; color: inherit;}"
-                    + ".icon-premium {margin-bottom: -2px;}";
-            // Ugly display in Add to List pop up (GS bug since weeks).
-            css += "#newListName {height: 42px;} .add-list-submit {display: inline-block;}";
-            // Improve clickability on list names of add to list pop up.
-            css += '.add-list li button {width: 100%; text-align: left;}';
-            appendCssStyle(css);
-            $('.btn-add-to-list')[0].addEventListener("click", function() {
-                window.scroll(0, 0);
-                setFocusToField(0, '#newListName');
-            });
-            $('.btn-add-to-list')[0].innerHTML = '<a href="' + $('.btn-add-to-list').attr('data-href') + '" style="padding-left: unset;">' + $('.btn-add-to-list')[0].innerHTML + '</a>';
-            // Prepare the display of count and names of own BMLs of the cache.
-            $('.btn-add-to-list a').addClass('gclh_ownBMLs_link');
-            $('.btn-add-to-list a')[0].append($('<span class="gclh_ownBMLs_count"></span>')[0]);
-        } catch(e) {gclh_error("Improve Add to list in cache listing",e);}
-    }
-
-// Get ignore status and count and names of own BMLs of the cache.
-    if (is_page("cache_listing") && $('.btn-add-to-list')[0] && !global_isBasic) {
-        try {
-            if (settings_show_remove_ignoring_link || settings_improve_add_to_list) {
-                if ($('.btn-add-to-list').attr('data-href') && $('.btn-add-to-list').attr('data-href').match(/guid=(.*)$/)) {
-                    var cacheGuidWptTypeID = $('.btn-add-to-list').attr('data-href').match(/guid=(.*)$/)[1];
-                    getOwnBMLs({cacheGuidWptTypeID: cacheGuidWptTypeID});
+            if ($('.btn-add-to-list')[0] && !global_isBasic) {
+                if (settings_show_remove_ignoring_link || settings_improve_add_to_list) {
+                    improveAddToList('');
                 }
             }
-        } catch(e) {gclh_error("Get ignore status and count and names of own BMLs of the cache",e);}
+        } catch(e) {gclh_error("Improve Add to List and Ignore Button in cache listing.",e);}
     }
 
 // Add link to waypoint list and cache logs to right sidebar.
@@ -12055,8 +12027,12 @@ var mainGC = function() {
                     if ($('.favorites-text')[0] && $('.favorites-text')[0].childNodes[0] && sidebar_enhancements_buffer[new_gc_code] && $(sidebar_enhancements_buffer[new_gc_code]).find('.favi_points')[0] && !$(sidebar_enhancements_buffer[new_gc_code]).find('.favi_points')[0].innerHTML == '') {
                         $('.favorites-text')[0].innerHTML = $('.favorites-text')[0].childNodes[0].data + '<span> (' + $(sidebar_enhancements_buffer[new_gc_code]).find('.favi_points')[0].innerHTML + ')</span>';
                     }
-                    if ($('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"] span')[0] && sidebar_enhancements_addToList_buffer[new_gc_code]) {
+                    if ($('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"] span')[0] && sidebar_enhancements_addToList_buffer[new_gc_code] &&
+                        (!$('.gclh_ownBMLs_count')[0] || $('.gclh_ownBMLs_count').attr('data-href') != $(sidebar_enhancements_addToList_buffer[new_gc_code]).attr('data-href'))) {
                         $('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"] span')[0].append(sidebar_enhancements_addToList_buffer[new_gc_code]);
+                        if (settings_searchmap_improve_add_to_list) {
+                            improveAddToList(new_gc_code);
+                        }
                     }
                     if (($('.gclhOwner') || $('.geocache-placed-date')) && !$('.gclh_weekday')[0] && sidebar_enhancements_weekday_buffer[new_gc_code]) {
                         if ($('.gclhOwner')[0]) $('.gclhOwner').after(sidebar_enhancements_weekday_buffer[new_gc_code]);
@@ -12328,9 +12304,11 @@ var mainGC = function() {
                     }
 
                     // Get count and names of own BMLs of the cache.
-                    if ($(text).find('.btn-add-to-list') && $(text).find('.btn-add-to-list').attr('data-href') && $(text).find('.btn-add-to-list').attr('data-href').match(/guid=(.*)$/) && !global_isBasic) {
-                        var cacheGuidWptTypeID = $(text).find('.btn-add-to-list').attr('data-href').match(/guid=(.*)$/)[1];
-                        getOwnBMLs({cacheGuidWptTypeID: cacheGuidWptTypeID, gcCodeFromSearchMap: local_gc_code});
+                    if (settings_searchmap_improve_add_to_list) {
+                        if ($(text).find('.btn-add-to-list') && $(text).find('.btn-add-to-list').attr('data-href') && $(text).find('.btn-add-to-list').attr('data-href').match(/guid=(.*)$/) && !global_isBasic) {
+                            var cacheGuidLink = $(text).find('.btn-add-to-list').attr('data-href');
+                            improveAddToList(local_gc_code, cacheGuidLink);
+                        }
                     }
 
                     // Show Weekday for Events.
@@ -12724,14 +12702,6 @@ var mainGC = function() {
             css += '#gclh_saveAsPQ img {vertical-align: middle;}';
             // Hide header.
             css += '.hideHeaderLink, .set_defaults {font-size: 12px; display: flex; gap: 0.5em;}';
-            // Add to List pop up.
-            if (settings_searchmap_improve_add_to_list) {
-                css += '#popover-portal-root .create-new-list-form {height: 41px;}';
-                css += '#popover-portal-root .create-new-list-submit {min-width: 40px;}';
-                css += '#popover-portal-root .existing-lists {max-height: ' + ((parseInt(settings_searchmap_improve_add_to_list_height) < 130) ? parseInt(130) : parseInt(settings_searchmap_improve_add_to_list_height)) + 'px;}';
-                css += '#popover-portal-root .existing-lists li {padding-top: 2px !important; padding-bottom: 2px !important;}';
-                css += '#popover-portal-root .existing-lists button, #popover-portal-root .existing-lists .status-icon {margin: 0px; padding: 0px !important; height: 18px;  line-height: 18px !important;}';
-            }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Search Map",e);}
     }
@@ -13071,7 +13041,7 @@ var mainGC = function() {
                 checkForAddHomeZoneMap(0);
             }
             isMapLoad(changeMap);
-            appendCssStyle(".leaflet-control-layers-base {min-width: 135px;} .add-list li {padding: 2px 0} .add-list li button {font-size: 14px; margin-bottom: 0px;}");
+            appendCssStyle(".leaflet-control-layers-base {min-width: 135px;}");
         } catch(e) {gclh_error("Change map parameter and add homezone to map",e);}
     }
 
@@ -13383,7 +13353,7 @@ var mainGC = function() {
             css += 'div.gclh_latest_log:hover img, span.gclh_cache_note:hover svg {opacity: 0.5;}';
 
             css += "span.premium_only img {margin-right:0px;}";
-            css += "#ownBMLsCount {cursor: default;} .map-item .send2gps img {margin-right: 0px;}";
+            css += ".map-item .send2gps img {margin-right: 0px;}";
             css += ".LogTotals, .LogTotals li {display: inline-block; margin: 0;} .LogTotals li {margin-right: 5px;}";
             css += ".gclh_owner {max-width: 110px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: clip; text-overflow: ellipsis;}";
             appendCssStyle(css);
@@ -13591,16 +13561,11 @@ var mainGC = function() {
                             doNotFlutter('.gclh_cache_note');
 
                             // Get count and names of own BMLs of the cache.
-                            if ($('#popup_additional_info_' + local_gc_code).closest('.map-item')[0] && !global_isBasic) {
-                                var item = $('#popup_additional_info_' + local_gc_code).closest('.map-item')[0];
-                                if ( !$(item).find('#ownBMLsCount')[0] && $(item).find('.btn-add-to-list > span')[0] ) {
-                                    // Prepare the display of count and names of own BMLs of the cache.
-                                    $(item).find('.btn-add-to-list').addClass('gclh_ownBMLs_link');
-                                    $(item).find('.btn-add-to-list')[0].after($('<span class="gclh_ownBMLs_count"></span>')[0]);
-                                    // Get count and names of own BMLs of the cache.
-                                    if ($('.btn-add-to-list').attr('href') && $('.btn-add-to-list').attr('href').match(/guid=(.*)$/)) {
-                                        var cacheGuidWptTypeID = $('.btn-add-to-list').attr('href').match(/guid=(.*)$/)[1];
-                                        getOwnBMLs({cacheGuidWptTypeID: cacheGuidWptTypeID, gcCodeFromBrowseMap: local_gc_code});
+                            if (settings_browsemap_improve_add_to_list) {
+                                if ($('#popup_additional_info_' + local_gc_code).closest('.map-item')[0] && !global_isBasic) {
+                                    var item = $('#popup_additional_info_' + local_gc_code).closest('.map-item')[0];
+                                    if ( !$(item).find('#ownBMLsCount')[0] && $(item).find('.btn-add-to-list > span')[0] ) {
+                                        improveAddToList(local_gc_code);
                                     }
                                 }
                             }
@@ -15305,7 +15270,7 @@ var mainGC = function() {
                 // Eigentlich sollte bei einem einzigen Pop up nach einem Klick gar kein Pop up Blocker anspringen. Falls das Pop up nicht geöffnet werden
                 // kann, sollte aber auf jeden Fall eine Nachricht erfolgen.
                 if (openPopup == null) {
-                    alert('The pop up could not be opened. A pop up blocker may be running. To use this feature, pop ups must be allowed for this website.');
+                    alert('The pop-up could not be opened. A pop-up blocker may be running. To use this feature, pop-ups must be allowed for this website.');
                 } else {
                     return openPopup;
                 }
@@ -16469,8 +16434,9 @@ var mainGC = function() {
         else return "";
     }
 
-// Get ignore status and count and names of own BMLs of a cache.
-    function getOwnBMLs({cacheGuidWptTypeID, gcCodeFromSearchMap, gcCodeFromBrowseMap}) {
+// Improve Add to List in cache listing, browse map and search map.
+    // Get ignore status and count and names of own BMLs of a cache.
+    function getOwnBMLs(cacheGuidWptTypeID, gcCode) {
         if (!cacheGuidWptTypeID || cacheGuidWptTypeID == '') return;
         var count = 0;
         var text = '';
@@ -16493,17 +16459,14 @@ var mainGC = function() {
                 list += (list == '' ? '' : '\n') + ary[i];
             }
             text = 'Currently available in ' + count + (count == 1 ? ' own list' : ' own lists');
-            if (gcCodeFromSearchMap) {
-                if (typeof(sidebar_enhancements_addToList_buffer) == 'object') {
-                    sidebar_enhancements_addToList_buffer[gcCodeFromSearchMap] = $('<span class="ownBMLsCount" title="' + list + '"> (' + count + ')</span>')[0];
-                    if ($('.cache-metadata-code')[0] && gcCodeFromSearchMap == $('.cache-metadata-code')[0].innerHTML && $('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"] span')[0]) {
-                        $('.ownBMLsCount').each(function(){removeElement(this);});
-                        $('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"] span')[0].append(sidebar_enhancements_addToList_buffer[gcCodeFromSearchMap]);
-                    }
+            if (is_page("searchmap")) {
+                if (typeof(sidebar_enhancements_addToList_buffer) == 'object' && $(sidebar_enhancements_addToList_buffer[gcCode])[0]) {
+                    $(sidebar_enhancements_addToList_buffer[gcCode])[0].title = list;
+                    $(sidebar_enhancements_addToList_buffer[gcCode])[0].innerHTML = ' (' + count + ')';
                 }
                 return;
             }
-            if (gcCodeFromBrowseMap && (!$('#gmCacheInfo .code')[0] || ($('#gmCacheInfo .code')[0] && $('#gmCacheInfo .code')[0].innerHTML != gcCodeFromBrowseMap))) {
+            if (is_page("map") && (!$('#gmCacheInfo .code')[0] || ($('#gmCacheInfo .code')[0] && $('#gmCacheInfo .code')[0].innerHTML != gcCode))) {
                 return;
             }
             if ($('.gclh_ownBMLs_link')[0]) {
@@ -16518,6 +16481,120 @@ var mainGC = function() {
             }
         });
     }
+    // Observer to update Add to List info when new BML has been added.
+    function oberverForUpdateOwnBMLs(gcCode) {
+        let qtipRunning = false;
+        const config = {childList: true, subtree: true};
+        const addToListObserver = new MutationObserver(function(_, observer) {
+            observer.disconnect();
+            // Wenn Popup vollständig aufgebaut ist.
+            // - Listing: Hier wird ein vorhandenes ".qtip.pop-modal" bei erneutem Klick auf den Add to List Button gelöscht und es wird ein neues aufgebaut.
+            // - Browse Map: Hier bleiben ".qtip.pop-modal" teilweise bestehen. Bei erneutem Klick auf den Add to List Button wird immer ein neues aufgebaut.
+            // - Search Map: Hier wird ein "#popover-portal-root input" bei Klick auf den Add to List Button immer neu aufgebaut. Es kann nur eins geben.
+            if (!qtipRunning && ($('.qtip.pop-modal.qtip-focus:[aria-hidden="false"]')[0] || $('#popover-portal-root input')[0])) qtipRunning = true;
+            // Wenn ein Eintrag in einer neuen BML oder ein Eintrag in einer vorhandenen BML erfolgt ist.
+            // (Bei der Search Map sind wir manchmal nicht schnell genug um eine Erfolgsmeldung zu erhalten. Und wir sind manchmal zu schnell
+            // mit der Ermittlung der BMLs, so dass die neu hinzugefügte noch gar nicht vorhanden ist. Deshalb warten wir bis das Popup verschwunden ist und
+            // ermitteln dann die BMLs, gegebenenfalls auch mal ohne dass ein Update erfolgt ist.)
+            if ($('.qtip.pop-modal.qtip-focus:[aria-hidden="false"] .add-menu .success, .qtip.pop-modal.qtip-focus:[aria-hidden="false"] .add-list .success')[0] ||
+                (is_page("searchmap") && qtipRunning && !$('#popover-portal-root input')[0])) {
+                if ($('.gclh_ownBMLs_count')[0]) {
+                    // Determine cache guid.
+                    var cacheGuidWptTypeID = determineCacheGuidOwnBMLs();
+                    // Get and display count and names of own BMLs.
+                    if (cacheGuidWptTypeID) {
+                        getOwnBMLs(cacheGuidWptTypeID, gcCode);
+                    }
+                }
+            // Observer nur wieder starten, so lange Popup noch nicht vollständig aufgebaut ist oder Popup noch angezeigt wird.
+            } else if (!qtipRunning || $('.qtip.pop-modal.qtip-focus')[0] || $('#popover-portal-root input')[0]) {
+                observer.observe(document.body, config);
+            }
+        });
+        addToListObserver.observe(document.body, config);
+    }
+    // Determine cache guid.
+    function determineCacheGuidOwnBMLs() {
+        var cacheGuidWptTypeID = '';
+        if (is_page("cache_listing")) var href = $('.btn-add-to-list').attr('data-href');
+        else if (is_page("map")) var href = $('.btn-add-to-list').attr('href');
+        else if (is_page("searchmap")) var href = $('.gclh_ownBMLs_count').attr('data-href');
+        if (href && href.match(/guid=(.*)$/)) {
+            cacheGuidWptTypeID = href.match(/guid=(.*)$/)[1];
+        }
+        return cacheGuidWptTypeID;
+    }
+// Improve Add to List button.
+    function improveAddToList(gcCode, cacheGuidLink) {
+        if (!gcCode) var gcCode = '';
+        var css = '';
+        if (is_page("cache_listing") && settings_improve_add_to_list) {
+            // Improve Add to List button.
+            $('.btn-add-to-list')[0].innerHTML = '<a href="' + $('.btn-add-to-list').attr('data-href') + '" style="padding-left: unset;">' + $('.btn-add-to-list')[0].innerHTML + '</a>';
+            css += '.CacheDetailNavigation .add_to_list_count {padding-left: 4px; color: inherit;}';
+            // Prepare the place to display count and names of own BMLs in Add to List button.
+            $('.btn-add-to-list a').addClass('gclh_ownBMLs_link');
+            $('.btn-add-to-list a')[0].append($('<span class="gclh_ownBMLs_count"></span>')[0]);
+            // Improve Add to List popup.
+            var height = ((parseInt(settings_improve_add_to_list_height) < 100) ? parseInt(100) : parseInt(settings_improve_add_to_list_height));
+            css += '.qtip.pop-modal .add-list {max-height: ' + height + 'px !important;}';
+            css += '.qtip.pop-modal .add-list li button {height: 18px !important;}';
+        } else if (is_page("map")) {
+            // Improve Add to List button.
+            // Prepare the display of count and names of own BMLs of the cache.
+            $('.btn-add-to-list').addClass('gclh_ownBMLs_link');
+            $('.btn-add-to-list')[0].append($('<span class="gclh_ownBMLs_count"></span>')[0]);
+            // Improve Add to List popup.
+            css += '.qtip.pop-modal .add-list {max-height: 207px !important;}';
+        } else if (is_page("searchmap")) {
+            // Add click event to Add to List button to update Add to List info when new BML have been added.
+            if ($('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"]')[0]) {
+                $('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"]')[0].addEventListener("click", function() {
+                    oberverForUpdateOwnBMLs(gcCode);
+                });
+            }
+            // Prepare the display of count and names of own BMLs of the cache.
+            if (typeof(sidebar_enhancements_addToList_buffer) == 'object' && cacheGuidLink) {
+                sidebar_enhancements_addToList_buffer[gcCode] = $('<span class="gclh_ownBMLs_count" data-href="' + cacheGuidLink + '" title=""></span>')[0];
+                if ($('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"] span')[0] && $('.cache-metadata-code')[0] && gcCode == $('.cache-metadata-code')[0].innerHTML) {
+                    $('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"] span')[0].append(sidebar_enhancements_addToList_buffer[gcCode]);
+                }
+            }
+            // Improve Add to List popup.
+            css += '#popover-portal-root div[data-testid="gc-add-to-list"], #popover-portal-root div[data-testid="create-new-list-form-section"] {gap: 8px !important;}';
+            css += '#popover-portal-root div[data-testid="create-new-list-form"] {height: 41px !important; margin-bottom: 10px !important;}';
+            css += '#create-new-list-textfield-header, #popover-portal-root input::placeholder, #popover-portal-root span[data-testid="existing-lists-header"] {color: #7e7d7a !important; font-size: 12px !important; font-weight: normal !important;}';
+            css += '#popover-portal-root span[data-testid="existing-lists-header"] {height: 20px !important; border-bottom: 1px solid #dfdfdf !important;}';
+            css += '#popover-portal-root section ul {max-height: ' + ((parseInt(settings_searchmap_improve_add_to_list_height) < 130) ? parseInt(130) : parseInt(settings_searchmap_improve_add_to_list_height)) + 'px !important;}';
+            css += '#popover-portal-root section ul li {padding-top: 2px !important; padding-bottom: 2px !important;}';
+            css += '#popover-portal-root section ul li button, #popover-portal-root section ul li .status-icon {line-height: 18px !important; height: 18px !important;}';
+        }
+        if ((is_page("cache_listing") && settings_improve_add_to_list) || is_page("map")) {
+            // Add click event to Add to List button to update Add to List info when new BML have been added.
+            $('.btn-add-to-list')[0].addEventListener("click", function() {
+                setTimeout(function(){setFocusToField(0, '#newListName');}, 0);
+                oberverForUpdateOwnBMLs(gcCode);
+            });
+            // Improve Add to List popup.
+            css += '.qtip.pop-modal:has(.add-list) {position: absolute;}';
+            css += '.qtip.pop-modal .add-menu label, .qtip.pop-modal .add-menu input::placeholder, .qtip.pop-modal .add-list-label {color: #7e7d7a !important; font-size: 12px !important;}';
+            css += '.qtip.pop-modal .add-menu input {box-shadow: unset;}';
+            css += '.qtip.pop-modal .add-menu .input-control.success span {padding: 10px 10px 0px 10px !important;}';
+            css += '.qtip.pop-modal .add-list li {padding: 2px 0 !important;}';
+            css += '.qtip.pop-modal .add-list li {padding: 2px 0 !important;}';
+            css += '.qtip.pop-modal .add-list li button {font-size: 14px !important; margin: 0px !important; width: 100%; text-align: left;}';
+            css += '.qtip.pop-modal .add-list .status {font-size: 14px !important; width: unset !important;}';
+            css += '.qtip.pop-modal .add-list .status.success, .qtip.pop-modal .add-list .success-message {right: 2px !important; padding: 0 15px 0px 5px !important; background-color: white !important; color: #E0B70A !important;}';
+            css += '.qtip.pop-modal .add-list .status .loading {right: 12px !important;}';
+        }
+        if (!css == '' && !$('#gclh_addToList')[0]) appendCssStyle(css, 'head', 'gclh_addToList');
+        // Determine cache guid.
+        var cacheGuidWptTypeID = determineCacheGuidOwnBMLs();
+        // Get and display count and names of own BMLs.
+        if (cacheGuidWptTypeID) {
+            getOwnBMLs(cacheGuidWptTypeID, gcCode);
+        }
+     }
 
 // Build dropdown with caret-down icon and own specified dropdown entries for gclh stuff.
     // Implement css, symbol and icon for dropdown functionality.
@@ -17161,9 +17238,9 @@ var mainGC = function() {
     var prem = " <img class='gclh_prem' title='The underlying feature of GC is a premium member only feature.' src='/images/icons/16/premium_only.png'> ";
     var dt_display = [ ["greater than or equal to",">="], ["equal to","="], ["less than or equal to","<="] ];
     var dt_score = [ ["1","1"], ["1.5","1.5"], ["2","2"], ["2.5","2.5"], ["3","3"], ["3.5","3.5"], ["4","4"], ["4.5","4.5"], ["5","5"] ];
-    var onlyBrowseMap = '<span title="This works only on the older Browse Map."> ' + browse_map_icon + '</span>';
-    var onlySearchMap = '<span title="This works only on the newer Search Map."> ' + search_map_icon + '</span>';
-    var onlyBrowseMapBehindIcon = '<span class="browse_map_icon" title="This works only on the older Browse Map.">' + browse_map_icon + '</span>';
+    var onlyBrowseMap = '<span title="This works only on the Browse Map."> ' + browse_map_icon + '</span>';
+    var onlySearchMap = '<span title="This works only on the Search Map."> ' + search_map_icon + '</span>';
+    var onlyBrowseMapBehindIcon = '<span class="browse_map_icon" title="This works only on the Browse Map.">' + browse_map_icon + '</span>';
 
     function gclh_createSelectOptionCode(id, data, selectedValue) {
         var html = "";
@@ -17568,12 +17645,15 @@ var mainGC = function() {
             html += newParameterOn1;
             html += checkboxy('settings_searchmap_show_cache_display_options', 'Show button for additional geocache display options') + show_help("With this option you can show a button for additional geocache display options on Search Map, e.g. show finds at corrected coordinates, hide DNFs or filter cache types.<br><br>This feature requires <a class='gclh_ref_ht_int' href=\"#settings_use_gclh_layercontrol_on_search_map\" title='Link to setting \"Replace map layers\"'>Replace map layers in Search Map</a> to be activated.") + onlySearchMap + "<br>";
             html += newParameterVersionSetzen('0.17') + newParameterOff;
-            html += checkboxy('settings_searchmap_improve_add_to_list', 'Show compact layout in \"Add to list\" pop up to bookmark a cache') + onlySearchMap + prem + "<br>";
-            html += " &nbsp; &nbsp;" + "Maximum height of pop up <select class='gclh_form' id='settings_searchmap_improve_add_to_list_height' >";
+            html += newParameterOn2;
+            html += checkboxy('settings_browsemap_improve_add_to_list', 'Show compact layout in \"Add to list\" pop-up, show info to lists') + show_help("This option makes the \"Add to list\" pop-up in browse map more compact and displays information about the lists that contain the cache.<br><br>This feature requires <a class='gclh_ref_ht_int' href=\"#settings_show_enhanced_map_popup\" title='Link to setting \"Show enhanced cache data\"'>Show enhanced cache data</a> to be activated.") + onlyBrowseMap + prem + "<br>";
+            html += newParameterVersionSetzen('0.18') + newParameterOff;
+            html += checkboxy('settings_searchmap_improve_add_to_list', 'Show compact layout in \"Add to list\" pop-up, show info to lists') + show_help("This option makes the \"Add to list\" pop-up in search map more compact and displays information about the lists that contain the cache.<br><br>This feature requires <a class='gclh_ref_ht_int' href=\"#settings_show_enhanced_map_popup\" title='Link to setting \"Show enhanced cache data\"'>Show enhanced cache data</a> to be activated.") + onlySearchMap + prem + "<br>";
+            html += " &nbsp; &nbsp;" + "Maximum height of pop-up <select class='gclh_form' id='settings_searchmap_improve_add_to_list_height' >";
             for (var i = 130; i < 521; i++) {
                 html += "  <option value='" + i + "' " + (settings_searchmap_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> px" + show_help("With this option you can choose the maximum height of the \"Add to list\" pop up to bookmark a cache from 130 up to 520 pixel. The default is 130 pixel, similar to the standard.") + "<br>";
+            html += "</select> px" + show_help("With this option you can choose the maximum height of the \"Add to list\" pop-up in search map from 130 up to 520 pixel. The default is 130 pixel, similar to the standard.") + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Homezone Circles</b>" + onlyBrowseMap + "</div>";
             html += checkboxy('settings_show_homezone', 'Show homezone circles') + show_help("This option allows to draw homezone circles around coordinates on the map.") + "<br>";
             html += "<div id='ShowHomezoneCircles' style='display: " + (settings_show_homezone ? "block":"none") + ";'>";
@@ -17704,12 +17784,12 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_switch_to_wmtmtb_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Cache Data</b>" + "</div>";
-            html += checkboxy('settings_show_enhanced_map_popup', 'Show enhanced cache data') + show_help("With this option, additional cache data will be shown in the pop up on the Browse Map and in the cache detail screen on the left side of the Search Map. Additional cache data are for example the latest log symbols, the elevation data, the favorites in percentage, the number of the trackables, the personal cache note and further data.") + "<br>";
+            html += checkboxy('settings_show_enhanced_map_popup', 'Show enhanced cache data') + show_help("With this option, additional cache data will be shown in the pop-up on the Browse Map and in the cache detail screen on the left side of the Search Map. Additional cache data are for example the latest log symbols, the elevation data, the favorites in percentage, the number of the trackables, the personal cache note and further data.") + "<br>";
             html += " &nbsp; &nbsp;" + "Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map'>";
             for (var i = 1; i <= 25; i++) {
                 html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count_map == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> latest log icons" + show_help("With this option, the choosen count of the latest logs icons is shown. If you move the mouse over a log icon, the log text is displayed in a pop up.") + "<br>";
+            html += "</select> latest log icons" + show_help("With this option, the choosen count of the latest logs icons is shown. If you move the mouse over a log icon, the log text is displayed in a pop-up.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_show_country_in_place', 'Show country as part of the location') + show_help("With this option the location of the cache is displayed with state and country separated by a comma or only with state. In the latter case the complete location is displayed if you hover with the mouse over the field.<br><br>You can use this also to prevent the line from being broken.") + "<br>";
             html += newParameterOn3;
             html += " &nbsp; " + checkboxy('settings_maps_add_county_to_place', 'Add county to location (only countries de, at)') + show_help("With this option, the county is added to the location of the cache if the cache location is in Germany or Austria. If you hover with your mouse over the field, the full address will be displayed.<br><br>The data comes from OpenStreetMap. They are not always completely accurate, which is why the parameter is deactivated by default. Other countries work with different data structures and the quality of the data does not always seem sufficient, which is why we have decided to only provide the named countries for this feature.") + "<br>";
@@ -17885,13 +17965,13 @@ var mainGC = function() {
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Cache Detail Navigation <font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
             html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
-            html += checkboxy('settings_prevent_watchclick_popup', 'Prevent pop up when clicking on "Watch" or "Stop Watching"') + "<br>";
-            html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" pop up to bookmark a cache') + prem + "<br>";
-            html += " &nbsp; &nbsp;" + "Maximum height of pop up <select class='gclh_form' id='settings_improve_add_to_list_height' >";
+            html += checkboxy('settings_prevent_watchclick_popup', 'Prevent pop-up when clicking on "Watch" or "Stop Watching"') + "<br>";
+            html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" pop-up, show info to lists') + show_help("This option makes the \"Add to list\" pop-up in cache listing more compact and displays information about the lists that contain the cache.") + prem + "<br>";
+            html += " &nbsp; &nbsp;" + "Maximum height of pop-up <select class='gclh_form' id='settings_improve_add_to_list_height' >";
             for (var i = 100; i < 521; i++) {
                 html += "  <option value='" + i + "' " + (settings_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> px" + show_help("With this option you can choose the maximum height of the \"Add to list\" pop up to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.") + "<br>";
+            html += "</select> px" + show_help("With this option you can choose the maximum height of the \"Add to list\" pop-up from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.") + "<br>";
             html += newParameterOn1;
             html += checkboxy('settings_hide_view_treasures_link', 'Hide \"View Treasures\" link') + prem + "<br>";
             html += newParameterVersionSetzen('0.17') + newParameterOff;
@@ -19114,6 +19194,9 @@ var mainGC = function() {
             setEvForDepPara("settings_show_enhanced_map_popup","settings_show_latest_logs_symbols_count_map");
             setEvForDepPara("settings_show_enhanced_map_popup","settings_show_country_in_place");
             setEvForDepPara("settings_show_enhanced_map_popup","settings_show_enhanced_map_coords");
+            setEvForDepPara("settings_show_enhanced_map_popup","settings_searchmap_improve_add_to_list");
+            setEvForDepPara("settings_show_enhanced_map_popup","settings_searchmap_improve_add_to_list_height");
+            setEvForDepPara("settings_show_enhanced_map_popup","settings_browsemap_improve_add_to_list");
             setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_cache_link");
             setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_cache_link_new_tab");
             setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_color_visited_link");
@@ -19700,6 +19783,8 @@ var mainGC = function() {
                 'settings_dashboard_show_logs_in_markdown',
                 'settings_public_profile_smaller_privacy_btn',
                 'settings_searchmap_improve_add_to_list',
+                'settings_searchmap_improve_add_to_list',
+                'settings_browsemap_improve_add_to_list',
                 'settings_improve_notifications',
                 'settings_dim_lost_trackables',
                 'settings_remove_target_log_form',
