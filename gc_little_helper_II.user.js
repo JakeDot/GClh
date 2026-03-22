@@ -17932,7 +17932,7 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Cache Detail Navigation <font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
             html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
             html += checkboxy('settings_prevent_watchclick_popup', 'Prevent pop-up when clicking on "Watch" or "Stop Watching"') + "<br>";
-            html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" pop-up, show info to lists') + show_help("This option makes the \"Add to list\" pop-up in cahe listing more compact and displays information about the lists that contain the cache.") + prem + "<br>";
+            html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" pop-up, show info to lists') + show_help("This option makes the \"Add to list\" pop-up in cache listing more compact and displays information about the lists that contain the cache.") + prem + "<br>";
             html += " &nbsp; &nbsp;" + "Maximum height of pop-up <select class='gclh_form' id='settings_improve_add_to_list_height' >";
             for (var i = 100; i < 521; i++) {
                 html += "  <option value='" + i + "' " + (settings_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
