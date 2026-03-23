@@ -1,3 +1,4 @@
+<a href="#v0181" title="GClh II version 0.18.1 (23.03.2026)">v0.18.1</a> &nbsp;
 <a href="#v018" title="GClh II version 0.18 (15.03.2026)">v0.18</a> &nbsp;
 <a href="#v01714" title="GClh II version 0.17.14 (16.02.2026)">v0.17.14</a> &nbsp;
 <a href="#v01713" title="GClh II version 0.17.13 (08.02.2026)">v0.17.13</a> &nbsp;
@@ -38,6 +39,60 @@
 <a href="#v015" title="GClh II version 0.15 (26.11.2023)">v0.15</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.18.1:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Note:</strong> [Maps] OpenStreetMap blocked [<a href="https://github.com/2Abendsegler/GClh/issues/3032" title="Issue 3032">3032</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		The access to OpenStreetMap with map layer "OpenStreetMap Default" is sometimes blocked. We can't fix this problem. Anyone using this map layer is affected.<br>
+		Here's the [background information in English](https://wiki.openstreetmap.org/wiki/Blocked_tiles) and [in German](https://wiki.openstreetmap.org/wiki/DE:Blocked_tiles).<br>
+		For now, you can use the "OpenStreetMap German Style" map layer. It also works in other countries. It's similar to the "OpenStreetMap Default" map layer. However, we can't say whether this will remain the case.<br><br>
+		Here you can change the deafult map layer:<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_maplayers_unavailable" title="Link to your GClh II Config">Settings -> Map - Layers in Map - Default map layer</a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_overview_build" title="Link to your GClh II Config">Settings -> Listing - Overview Map - Map layer</a><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing, Maps] Update "Add to List" info when new list has been added. [<a href="https://github.com/2Abendsegler/GClh/issues/3046" title="Issue 3046">3046</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		The following three options makes the "Add to list" pop-up in Cache Listing or in the Browse Map or in the Search Map more compact and displays information about the lists that contain the cache. The information about the lists is updated immediately as soon as a new list is added.<br>
+		For example in Cache Listing:<br>
+		<img src="../images/0.18.1/Screen05.jpg" alt="Screen05.jpg"><br>
+		For further examples see issue.<br><br>
+		Not all the parameters are new. However, the features have been completely revised and expanded.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_improve_add_to_list" title="Link to your GClh II Config">Settings -> Listing - Cache Detail Navigation:<br>
+		<img src="../images/0.18.1/Screen06.jpg" alt="Screen06.jpg"></a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_browsemap_improve_add_to_list" title="Link to your GClh II Config">Settings -> Map (Browse Map):<br>
+		<img src="../images/0.18.1/Screen07.jpg" alt="Screen07.jpg"></a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_improve_add_to_list" title="Link to your GClh II Config">Settings -> Map (Search Map):<br>
+		<img src="../images/0.18.1/Screen08.jpg" alt="Screen08.jpg"></a><br>
+		If you want to optimize the settings, you may need to change something.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing, Maps] Integrate favorite icon of log in "Latest Logs" and "VIP-List". [<a href="https://github.com/2Abendsegler/GClh/issues/3050" title="Issue 3050">3050</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		Integrate favorite icon of a log in the display of "Latest Logs" logs and "VIP-List" logs in Cache Listing.<br>
+		Integrate favorite icon of a log in the display of "Latest Logs" logs in Browse Map and Search Map.<br>
+		For example in Cache Listing Latest logs:<br>
+		<img src="../images/0.18.1/Screen01.jpg" alt="Screen01.jpg"><br>
+		For further examples see issue.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Browse Map] Remove foreign layers from GC or other to reduce load and flicker and load faster. [<a href="https://github.com/2Abendsegler/GClh/issues/3052" title="Issue 3052">3052</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Wrong position of button "Display Options". [<a href="https://github.com/2Abendsegler/GClh/issues/2963" title="Issue 2963">2963</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Wrong position of button "Display Options". [<a href="https://github.com/2Abendsegler/GClh/issues/2963" title="Issue 2963">2963</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Log Form] Word count not correct when using special characters. [<a href="https://github.com/2Abendsegler/GClh/issues/2957" title="Issue 2957">2957</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+</ul>
+<br>
+(16.02.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.18:
