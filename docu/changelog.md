@@ -55,7 +55,7 @@
 	<li>
 		<strong>New:</strong> [Cache Listing, Maps] Update "Add to List" info when new list has been added. [<a href="https://github.com/2Abendsegler/GClh/issues/3046" title="Issue 3046">3046</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		The following three options makes the "Add to list" pop-up in Cache Listing or in the Browse Map or in the Search Map more compact and displays information about the lists that contain the cache. The information about the lists is updated immediately as soon as a new list is added.<br>
-		For example in Cache Listing:<br>
+		For example the information about the lists in Cache Listing:<br>
 		<img src="../images/0.18.1/Screen05.jpg" alt="Screen05.jpg"><br>
 		Further examples can be found in <a href="https://github.com/2Abendsegler/GClh/issues/3046" title="Issue 3046">issue 3046</a>.<br><br>
 		Not all the parameters are new. However, the features have been completely revised and expanded.<br>
