@@ -71,7 +71,7 @@
 		<strong>New:</strong> [Cache Listing, Maps] Integrate favorite icon of log in "Latest Logs" and "VIP-List". [<a href="https://github.com/2Abendsegler/GClh/issues/3050" title="Issue 3050">3050</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Integrate favorite icon of a log in the display of "Latest Logs" logs and "VIP-List" logs in Cache Listing.<br>
 		Integrate favorite icon of a log in the display of "Latest Logs" logs in Browse Map and Search Map.<br>
-		For example in Cache Listing Latest logs:<br>
+		For example the "Latest logs" in Cache Listing:<br>
 		<img src="../images/0.18.1/Screen01.jpg" alt="Screen01.jpg"><br>
 		Further examples can be found in <a href="https://github.com/2Abendsegler/GClh/issues/3050" title="Issue 3050">issue 3050</a>.<br><br>
 	</li>
