@@ -1,4 +1,4 @@
-<a href="#v0181" title="GClh II version 0.18.1 (23.03.2026)">v0.18.1</a> &nbsp;
+<a href="#v0181" title="GClh II version 0.18.1 (24.03.2026)">v0.18.1</a> &nbsp;
 <a href="#v018" title="GClh II version 0.18 (15.03.2026)">v0.18</a> &nbsp;
 <a href="#v01714" title="GClh II version 0.17.14 (16.02.2026)">v0.17.14</a> &nbsp;
 <a href="#v01713" title="GClh II version 0.17.13 (08.02.2026)">v0.17.13</a> &nbsp;
@@ -80,17 +80,59 @@
 		<strong>New:</strong> [Browse Map] Remove foreign layers from GC or other to reduce load and flicker and load faster. [<a href="https://github.com/2Abendsegler/GClh/issues/3052" title="Issue 3052">3052</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Search Map] Wrong position of button "Display Options". [<a href="https://github.com/2Abendsegler/GClh/issues/2963" title="Issue 2963">2963</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Browse Map] Hide header doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/3025" title="Issue 3025">3025</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Search Map] Wrong position of button "Display Options". [<a href="https://github.com/2Abendsegler/GClh/issues/2963" title="Issue 2963">2963</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		<strong>Fix:</strong> [Browse Map] Misaligned search field in header. [<a href="https://github.com/2Abendsegler/GClh/issues/3027" title="Issue 3027">3027</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [New Log Form] Word count not correct when using special characters. [<a href="https://github.com/2Abendsegler/GClh/issues/2957" title="Issue 2957">2957</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		<strong>Fix:</strong> [Config] Wrong parameter in config standard file. [<a href="https://github.com/2Abendsegler/GClh/issues/3028" title="Issue 3028">3028</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Config] Improve Config Link to GitHub FAQ. [<a href="https://github.com/2Abendsegler/GClh/issues/3029" title="Issue 3029">3029</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Edit Log, View Log] GClh header missing - Wait for header and build up header: Timeout detecting header. [<a href="https://github.com/2Abendsegler/GClh/issues/3030" title="Issue 3030">3030</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form, Edit Log] Warning message due to unsaved changes is not displayed correctly. [<a href="https://github.com/2Abendsegler/GClh/issues/3034" title="Issue 3034">3034</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Edit Log, View Log] Improve multipage observer call. [<a href="https://github.com/2Abendsegler/GClh/issues/3035" title="Issue 3035">3035</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Improve Add to List feature with cache check. [<a href="https://github.com/2Abendsegler/GClh/issues/3036" title="Issue 3036">3036</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] Header search field too narrow on some pages. [<a href="https://github.com/2Abendsegler/GClh/issues/3037" title="Issue 3037">3037</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] Fix separator in horizontal header layout. [<a href="https://github.com/2Abendsegler/GClh/issues/3038" title="Issue 3038">3038</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Prevent gray area at the bottom of the page. [<a href="https://github.com/2Abendsegler/GClh/issues/3041" title="Issue 3041">3041</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing, Config] No longer displayed correctly. [<a href="https://github.com/2Abendsegler/GClh/issues/3042" title="Issue 3042">3042</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing, Maps] Prevent overflows in preformatted text. [<a href="https://github.com/2Abendsegler/GClh/issues/3043" title="Issue 3043">3043</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Highlight user changed coordinates doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/3045" title="Issue 3045">3045</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [My Lists] The "more" pop-up is not fully visible due to the header. [<a href="https://github.com/2Abendsegler/GClh/issues/3048" title="Issue 3048">3048</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Improve the first scale line of the output on the left side. [<a href="https://github.com/2Abendsegler/GClh/issues/3049" title="Issue 3049">3049</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Own Public Profile] Config does not open on about tab. [<a href="https://github.com/2Abendsegler/GClh/issues/3051" title="Issue 3051">3051</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 	</li>
 </ul>
 <br>
-(16.02.2026)<br>
+(24.03.2026)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
 
