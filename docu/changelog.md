@@ -45,16 +45,16 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
-		<strong>Note:</strong> [Maps] OpenStreetMap blocked [<a href="https://github.com/2Abendsegler/GClh/issues/3032" title="Issue 3032">3032</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>Note:</strong> [Maps] OpenStreetMap blocked [<a href="https://github.com/2Abendsegler/GClh/issues/3032" title="Issue 3032">3032</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		The access to OpenStreetMap with map layer "OpenStreetMap Default" is sometimes blocked. We can't fix this problem. Anyone using this map layer is affected.<br>
-		Here's the [background information in English](https://wiki.openstreetmap.org/wiki/Blocked_tiles) and [in German](https://wiki.openstreetmap.org/wiki/DE:Blocked_tiles).<br>
+		Here's the <a href="https://wiki.openstreetmap.org/wiki/Blocked_tiles" title="background information in English">background information in English</a>  and <a href="https://wiki.openstreetmap.org/wiki/DE:Blocked_tiles" title="background information in German">in German</a>.<br>
 		For now, you can use the "OpenStreetMap German Style" map layer. It also works in other countries. It's similar to the "OpenStreetMap Default" map layer. However, we can't say whether this will remain the case.<br><br>
 		Here you can change the deafult map layer:<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_maplayers_unavailable" title="Link to your GClh II Config">Settings -> Map - Layers in Map - Default map layer</a><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_overview_build" title="Link to your GClh II Config">Settings -> Listing - Overview Map - Map layer</a><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Cache Listing, Maps] Update "Add to List" info when new list has been added. [<a href="https://github.com/2Abendsegler/GClh/issues/3046" title="Issue 3046">3046</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>New:</strong> [Cache Listing, Maps] Update "Add to List" info when new list has been added. [<a href="https://github.com/2Abendsegler/GClh/issues/3046" title="Issue 3046">3046</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		The following three options makes the "Add to list" pop-up in Cache Listing or in the Browse Map or in the Search Map more compact and displays information about the lists that contain the cache. The information about the lists is updated immediately as soon as a new list is added.<br>
 		For example in Cache Listing:<br>
 		<img src="../images/0.18.1/Screen05.jpg" alt="Screen05.jpg"><br>
@@ -69,7 +69,7 @@
 		If you want to optimize the settings, you may need to change something.<br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Cache Listing, Maps] Integrate favorite icon of log in "Latest Logs" and "VIP-List". [<a href="https://github.com/2Abendsegler/GClh/issues/3050" title="Issue 3050">3050</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>New:</strong> [Cache Listing, Maps] Integrate favorite icon of log in "Latest Logs" and "VIP-List". [<a href="https://github.com/2Abendsegler/GClh/issues/3050" title="Issue 3050">3050</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Integrate favorite icon of a log in the display of "Latest Logs" logs and "VIP-List" logs in Cache Listing.<br>
 		Integrate favorite icon of a log in the display of "Latest Logs" logs in Browse Map and Search Map.<br>
 		For example in Cache Listing Latest logs:<br>
