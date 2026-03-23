@@ -119,16 +119,16 @@
 		<strong>Fix:</strong> [Own Public Profile] Config does not open on about tab. [<a href="https://github.com/2Abendsegler/GClh/issues/3051" title="Issue 3051">3051</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Config] Improve Config Link to GitHub FAQ. [<a href="https://github.com/2Abendsegler/GClh/issues/3029" title="Issue 3029">3029</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> [Config] Wrong parameter in config standard file. [<a href="https://github.com/2Abendsegler/GClh/issues/3028" title="Issue 3028">3028</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
 		<strong>Fix:</strong> [Global] Header search field too narrow on some pages. [<a href="https://github.com/2Abendsegler/GClh/issues/3037" title="Issue 3037">3037</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Global] Fix separator in horizontal header layout. [<a href="https://github.com/2Abendsegler/GClh/issues/3038" title="Issue 3038">3038</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Config] Improve Config Link to GitHub FAQ. [<a href="https://github.com/2Abendsegler/GClh/issues/3029" title="Issue 3029">3029</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Config] Wrong parameter in config standard file. [<a href="https://github.com/2Abendsegler/GClh/issues/3028" title="Issue 3028">3028</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 <br>
