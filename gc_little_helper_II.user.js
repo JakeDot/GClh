@@ -12859,16 +12859,22 @@ var mainGC = function() {
                                 aTag.setAttribute("class", "leaflet-control-layers dummy_for_gme gclh_dummy gclh_used");
                                 div.appendChild(aTag);
                                 side.parentNode.insertBefore(div, side);
-                                if (document.location.pathname.match(/^\/map/)) {
-                                    // Defekte Layer entfernen. (GCVote verursacht hier gelegentlich einen Abbruch, weil der dort verwendete localStorageCache scheinbar unvollständige Layer belebt.)
-                                    try {
-                                        for (layerId in window.MapSettings.Map._layers) {
-                                            if (window.MapSettings.Map._layers[layerId]._url !== -1) {
-                                                window.MapSettings.Map.removeLayer(window.MapSettings.Map._layers[layerId]);
+                                try {
+                                    // Remove foreign starting layers from GC (not the cache tiles and the info) or GME.
+                                    // (More details see https://github.com/2Abendsegler/GClh/pull/3052)
+                                    function removeForeignLayers(waitCount) {
+                                        if (document.location.href.match(/&pop=/)) return; // Transferring GME waypoints.
+                                        for (i in window.MapSettings.Map._layers) {
+                                            if (window.MapSettings.Map._layers[i]._url) {
+                                                if (!window.MapSettings.Map._layers[i].options?.gclh && !window.MapSettings.Map._layers[i]._url.match(/tiles0\{s\}\.geocaching\.com\/map\.(png\?|info\?)/i)) {
+                                                    window.MapSettings.Map.removeLayer(window.MapSettings.Map._layers[i]);
+                                                }
                                             }
                                         }
-                                    } catch(e) {};
-                                }
+                                        if (++waitCount <= 200) setTimeout(function(){removeForeignLayers(waitCount);}, 50);
+                                    }
+                                    removeForeignLayers(0);
+                                } catch(e) {};
                             }
                             if (document.location.pathname.match(/^(\/live|)\/play\/map/)) {
                                 setTimeout(() => {
