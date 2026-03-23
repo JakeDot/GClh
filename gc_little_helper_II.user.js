@@ -16493,20 +16493,25 @@ var mainGC = function() {
                     $(sidebar_enhancements_addToList_buffer[gcCode])[0].title = list;
                     $(sidebar_enhancements_addToList_buffer[gcCode])[0].innerHTML = ' (' + count + ')';
                 }
-                return;
-            }
-            if (is_page("map") && (!$('#gmCacheInfo .code')[0] || ($('#gmCacheInfo .code')[0] && $('#gmCacheInfo .code')[0].innerHTML != gcCode))) {
-                return;
-            }
-            if ($('.gclh_ownBMLs_link')[0]) {
-                $('.gclh_ownBMLs_link')[0].setAttribute('title', text);
-            }
-            if ($('.gclh_ownBMLs_count')[0]) {
-                $('.gclh_ownBMLs_count')[0].setAttribute('title', list);
-                $('.gclh_ownBMLs_count')[0].innerHTML = ' (' + count + ')';
-            }
-            if (ignore && settings_show_remove_ignoring_link && $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a')[0]) {
-                changeIgnoreButton('Stop Ignoring');
+            } else if (is_page("map")) {
+                if ($('.gclh_ownBMLs_link:[data-gcrefcode="' + gcCode + '"]')[0]) {
+                    $('.gclh_ownBMLs_link:[data-gcrefcode="' + gcCode + '"]')[0].setAttribute('title', text);
+                }
+                if ($('.gclh_ownBMLs_link:[data-gcrefcode="' + gcCode + '"] .gclh_ownBMLs_count')[0]) {
+                    $('.gclh_ownBMLs_link:[data-gcrefcode="' + gcCode + '"] .gclh_ownBMLs_count')[0].setAttribute('title', list);
+                    $('.gclh_ownBMLs_link:[data-gcrefcode="' + gcCode + '"] .gclh_ownBMLs_count')[0].innerHTML = ' (' + count + ')';
+                }
+            } else if (is_page("cache_listing")) {
+                if ($('.gclh_ownBMLs_link')[0]) {
+                    $('.gclh_ownBMLs_link')[0].setAttribute('title', text);
+                }
+                if ($('.gclh_ownBMLs_count')[0]) {
+                    $('.gclh_ownBMLs_count')[0].setAttribute('title', list);
+                    $('.gclh_ownBMLs_count')[0].innerHTML = ' (' + count + ')';
+                }
+                if (ignore && settings_show_remove_ignoring_link && $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a')[0]) {
+                    changeIgnoreButton('Stop Ignoring');
+                }
             }
         });
     }
@@ -16527,9 +16532,9 @@ var mainGC = function() {
             // ermitteln dann die BMLs, gegebenenfalls auch mal ohne dass ein Update erfolgt ist.)
             if ($('.qtip.pop-modal.qtip-focus:[aria-hidden="false"] .add-menu .success, .qtip.pop-modal.qtip-focus:[aria-hidden="false"] .add-list .success')[0] ||
                 (is_page("searchmap") && qtipRunning && !$('#popover-portal-root input')[0])) {
-                if ($('.gclh_ownBMLs_count')[0]) {
+                if ((is_page("map") && $('.gclh_ownBMLs_link:[data-gcrefcode="' + gcCode + '"]')[0]) || (!is_page("map") && $('.gclh_ownBMLs_count')[0])) {
                     // Determine cache guid.
-                    var cacheGuidWptTypeID = determineCacheGuidOwnBMLs();
+                    var cacheGuidWptTypeID = determineCacheGuidOwnBMLs(gcCode);
                     // Get and display count and names of own BMLs.
                     if (cacheGuidWptTypeID) {
                         getOwnBMLs(cacheGuidWptTypeID, gcCode);
@@ -16543,17 +16548,17 @@ var mainGC = function() {
         addToListObserver.observe(document.body, config);
     }
     // Determine cache guid.
-    function determineCacheGuidOwnBMLs() {
+    function determineCacheGuidOwnBMLs(gcCode) {
         var cacheGuidWptTypeID = '';
         if (is_page("cache_listing")) var href = $('.btn-add-to-list').attr('data-href');
-        else if (is_page("map")) var href = $('.btn-add-to-list').attr('href');
+        else if (is_page("map")) var href = $('.btn-add-to-list:[data-gcrefcode="' + gcCode + '"]').attr('href');
         else if (is_page("searchmap")) var href = $('.gclh_ownBMLs_count').attr('data-href');
         if (href && href.match(/guid=(.*)$/)) {
             cacheGuidWptTypeID = href.match(/guid=(.*)$/)[1];
         }
         return cacheGuidWptTypeID;
     }
-// Improve Add to List button.
+    // Improve Add to List button.
     function improveAddToList(gcCode, cacheGuidLink) {
         if (!gcCode) var gcCode = '';
         var css = '';
@@ -16561,6 +16566,11 @@ var mainGC = function() {
             // Improve Add to List button.
             $('.btn-add-to-list')[0].innerHTML = '<a href="' + $('.btn-add-to-list').attr('data-href') + '" style="padding-left: unset;">' + $('.btn-add-to-list')[0].innerHTML + '</a>';
             css += '.CacheDetailNavigation .add_to_list_count {padding-left: 4px; color: inherit;}';
+            // Add click event to Add to List button to update Add to List info when new BML have been added.
+            $('.btn-add-to-list')[0].addEventListener("click", function() {
+                setTimeout(function(){setFocusToField(0, '#newListName');}, 0);
+                oberverForUpdateOwnBMLs(gcCode);
+            });
             // Prepare the place to display count and names of own BMLs in Add to List button.
             $('.btn-add-to-list a').addClass('gclh_ownBMLs_link');
             $('.btn-add-to-list a')[0].append($('<span class="gclh_ownBMLs_count"></span>')[0]);
@@ -16569,10 +16579,14 @@ var mainGC = function() {
             css += '.qtip.pop-modal .add-list {max-height: ' + height + 'px !important;}';
             css += '.qtip.pop-modal .add-list li button {height: 18px !important;}';
         } else if (is_page("map")) {
-            // Improve Add to List button.
+            // Add click event to Add to List button to update Add to List info when new BML have been added.
+            $('.btn-add-to-list:[data-gcrefcode="' + gcCode + '"]')[0].addEventListener("click", function() {
+                setTimeout(function(){setFocusToField(0, '#newListName');}, 0);
+                oberverForUpdateOwnBMLs(gcCode);
+            });
             // Prepare the display of count and names of own BMLs of the cache.
-            $('.btn-add-to-list').addClass('gclh_ownBMLs_link');
-            $('.btn-add-to-list')[0].append($('<span class="gclh_ownBMLs_count"></span>')[0]);
+            $('.btn-add-to-list:[data-gcrefcode="' + gcCode + '"]').addClass('gclh_ownBMLs_link');
+            $('.btn-add-to-list:[data-gcrefcode="' + gcCode + '"]')[0].append($('<span class="gclh_ownBMLs_count"></span>')[0]);
             // Improve Add to List popup.
             css += '.qtip.pop-modal .add-list {max-height: 207px !important;}';
         } else if (is_page("searchmap")) {
@@ -16599,11 +16613,6 @@ var mainGC = function() {
             css += '#popover-portal-root section ul li button, #popover-portal-root section ul li .status-icon {line-height: 18px !important; height: 18px !important;}';
         }
         if ((is_page("cache_listing") && settings_improve_add_to_list) || is_page("map")) {
-            // Add click event to Add to List button to update Add to List info when new BML have been added.
-            $('.btn-add-to-list')[0].addEventListener("click", function() {
-                setTimeout(function(){setFocusToField(0, '#newListName');}, 0);
-                oberverForUpdateOwnBMLs(gcCode);
-            });
             // Improve Add to List popup.
             css += '.qtip.pop-modal:has(.add-list) {position: absolute;}';
             css += '.qtip.pop-modal .add-menu label, .qtip.pop-modal .add-menu input::placeholder, .qtip.pop-modal .add-list-label {color: #7e7d7a !important; font-size: 12px !important;}';
@@ -16618,7 +16627,7 @@ var mainGC = function() {
         }
         if (!css == '' && !$('#gclh_addToList')[0]) appendCssStyle(css, 'head', 'gclh_addToList');
         // Determine cache guid.
-        var cacheGuidWptTypeID = determineCacheGuidOwnBMLs();
+        var cacheGuidWptTypeID = determineCacheGuidOwnBMLs(gcCode);
         // Get and display count and names of own BMLs.
         if (cacheGuidWptTypeID) {
             getOwnBMLs(cacheGuidWptTypeID, gcCode);
