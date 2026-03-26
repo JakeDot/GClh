@@ -12734,13 +12734,14 @@ var mainGC = function() {
             var css = '';
             // Damit auch mehr als 2 rechte Buttons handlebar.
             css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
-            // Improve the first scale line on the left side.
+            // Improve the scale lines on the left side.
+            css += '.leaflet-control-scale {margin-bottom: 18px !important; margin-left: 1px !important;}';
             css += '.leaflet-control-scale-line:first-child {box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2) !important;}';
             // Improve clickability on list names of add to list pop up.
             css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
-            // Enable Linklist, config and sync scrolling on Browse Map.
-            css += "body {overflow: visible;}";
             appendCssStyle(css);
+            // Enable Linklist, config and sync scrolling on Browse Map.
+            $('body')[0].style.setProperty('overflow', 'visible', 'important');
         } catch(e) {gclh_error("Improve Browse Map",e);}
     }
 
