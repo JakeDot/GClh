@@ -13181,13 +13181,14 @@ var mainGC = function() {
                     if ($('#search-map-cta')[0] && $('.leaflet-top.leaflet-right')[0]) {
                         $('.leaflet-top.leaflet-right').append('<div id="gclh_search_map" class="leaflet-control-layers leaflet-control" title="Search geocaches"></div>');
                         $('#gclh_search_map').append($('#search-map-cta').remove().get().reverse());
+                        $('#gclh_search_map a').attr('class', '');
                         $('#gclh_search_map a')[0].childNodes[2].remove();
                         var css = '';
                         css += '.leaflet-top.leaflet-right {top: unset;}';
-                        css += '.map-cta {opacity: 0.8; background-color: rgb(248, 248, 249); width: 36px; height: 36px; border: unset; box-shadow: unset; line-height: unset; padding: unset; position: unset;}';
-                        css += '#gclh_search_map, #gclh_search_map > a {z-index: 1018;}';
+                        css += '#gclh_search_map {width: 28px; height: 28px; align-items: center; display: flex !important; justify-content: center; outline: none;  padding: 4px; position: relative; z-index: 1018;}';
+                        css += '#gclh_search_map:hover {background-color: #fff;}';
+                        css += '#gclh_search_map a {opacity: 0.8; margin-top: 2px;}';
                         css += '#gclh_search_map svg {margin: 0; padding: 9px 7px 6px 7px; color: #02874d;}';
-                        css += '.map-cta:hover {background-color: #e6f7ef;}';
                         appendCssStyle(css);
                     }
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){relocatingSearchMapButton(waitCount);}, 100);}
