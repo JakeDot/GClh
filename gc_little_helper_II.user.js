@@ -15613,10 +15613,10 @@ var mainGC = function() {
     function hide_map_header() {
         if ($('gclh_nav')[0].style.display != "none") {
             $('gclh_nav')[0].style.display = "none";
-            $('#Content')[0].style.top = 0;
+            $('#Content')[0].style.setProperty('top', 0, 'important');
         } else {
             $('gclh_nav')[0].style.display = "block";
-            $('#Content')[0].style.top = "80px";
+            $('#Content')[0].style.setProperty('top', '80px', 'important');
         }
     }
 
