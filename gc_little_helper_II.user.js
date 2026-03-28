@@ -1826,7 +1826,7 @@ var mainGC = function() {
                     ".#m li a, .#m li a:link, .#m li a:visited, .#m li {color: #" + font_color_menu + " !important;}" +
                     ".#m li a:hover, .#m li a:focus {color: #FFFFFF !important; outline: unset !important;}" +
                     // Schriftfarbe Search Field.
-                    "#navi_search {color: #4a4a4a;} #navi_search:focus, #navi_search:focus-visible, #navi_search:active {outline: none; box-shadow: none;}" +
+                    "#navi_search {color: #4a4a4a;} #navi_search:focus, #navi_search:focus-visible, #navi_search:active {outline: none !important; box-shadow: none !important;}" +
                     // Separator.
                     ".menu_separator {padding-bottom: 2px !important;}" +
                     // Submenü im Vordergrund.
@@ -7732,14 +7732,14 @@ var mainGC = function() {
             (is_page("cache_listing")                                            ||      // Cache Listing (nicht in den Logs)
              is_page("owner_dashboard")                                          ||      // Owner Dashboard
              is_page("publicProfile")                                            ||      // Öffentliches Profil
-             is_page("searchmap")                                                ||      // Search Map / New Map
+             is_page("map")                                                      ||      // Browse Map (For enhanced Pop-up Informations)
+             is_page("searchmap")                                                ||      // Search Map
              document.location.href.match(/\.com\/track\/details\.aspx/)         ||      // TB Listing
              document.location.href.match(/\.com\/(seek|track)\/log\.aspx/)      ||      // Post, Edit, View Cache und TB Logs
                                                                                          // Log form, log edit, log view redesigned new log page
              document.location.href.match(/\/live\/(?:log\/(?:gl|tl)|(?:geocache|trackable)\/(?:gc|tb))[a-z0-9]+/i) ||
              document.location.href.match(/\.com\/email\//)                      ||      // Mail schreiben
              document.location.href.match(/\.com\/my\/inventory\.aspx/)          ||      // TB Inventar
-             document.location.href.match(/\.com\/map/)                          ||      // Map (For enhanced Pop-up Informations)
              document.location.href.match(/\.com\/account\/dashboard/)           ||      // Dashboard
              document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/) ||  // Nearest Lists mit User
              document.location.href.match(/\.com\/play\/(friendleague|leaderboard)/) ||  // Friend League, Leaderboard
@@ -8414,6 +8414,10 @@ var mainGC = function() {
 
             // Owner Dashbord:
             // The VIP/VUP for the Owner Dashboard is in the Owner Dashboard section because a mutation observer is required.
+            // ----------
+
+            // Browse Map:
+            // The VIP/VUP for the Browse Map is in the Browse Map section (function cachePopupOnBrowseMap) because a mutation observer is required.
             // ----------
 
             // Search Map:
@@ -13160,7 +13164,7 @@ var mainGC = function() {
                         css += '.leaflet-top.leaflet-right {top: unset;}';
                         css += '#gclh_search_map {width: 28px; height: 28px; align-items: center; display: flex !important; justify-content: center; outline: none;  padding: 4px; position: relative; z-index: 1018;}';
                         css += '#gclh_search_map:hover {background-color: #fff;}';
-                        css += '#gclh_search_map a {opacity: 0.8; margin-top: 2px;}';
+                        css += '#gclh_search_map a {opacity: 0.8; margin-top: 4px;}';
                         css += '#gclh_search_map svg {margin: 0; padding: 9px 7px 6px 7px; color: #02874d;}';
                         appendCssStyle(css);
                     }
@@ -13267,7 +13271,7 @@ var mainGC = function() {
         try {
             function waitForSavePQ(waitCount) {
                 if ($('.pq-dl')[0] && $('#lnk_savepq')[0]) {
-                    $('.pq-dl').append('<div class="set_defaults toggle-filter"><span class="label" title="Set GClh defaults for new PQs.\nThe Map Filters overwrite the GClh defaults.">&nbsp;|&nbsp;Set defaults</span></div><div class="gclh_toggle-handle"></div>');
+                    $('.pq-dl').append('<div class="set_defaults toggle-filter"><span class="label" title="Set GClh defaults for new PQs.\nThe Map Filters overwrite the GClh defaults.">' + (global_isBasic ? '':'&nbsp;|&nbsp;') + 'Set defaults</span></div><div class="gclh_toggle-handle"></div>');
                     $('.pq-dl .gclh_toggle-handle')[0].onclick = function() {
                         $('.pq-dl .gclh_toggle-handle').toggleClass('on');
                         setValue('set_switch_browsemap_set_defaults', $('.pq-dl .gclh_toggle-handle.on')[0] ? true:false);
@@ -13310,12 +13314,21 @@ var mainGC = function() {
             // Select the target node.
             var target = document.querySelector('.leaflet-popup-pane');
 
-            if (settings_show_enhanced_map_coords) var css = "div.popup_additional_info {min-height: 82px;}";
-            else var css = "div.popup_additional_info {min-height: 64px;}";
-            css += "div.popup_additional_info .loading_container{display: flex; justify-content: center; align-items: center;}"
-            css += "div.popup_additional_info .loading_container img{margin-right:5px;}"
-            css += "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
-            css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px;}";
+            var css = '';
+            css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px !important;}";
+            css += ".leaflet-popup-content {margin-left: 10px !important; margin-right: 10px !important;}";
+            css += "#gmCacheInfo h4 a, #gmCacheInfo dl a, #gmCacheInfo dl a span, #gmCacheInfo .links:not(.popup_additional_info) a {text-decoration-line: none !important;}";
+            css += "#gmCacheInfo h4 a:hover, #gmCacheInfo dl a:hover, #gmCacheInfo dl a span:hover, #gmCacheInfo .links:not(.popup_additional_info) a:hover {text-decoration-line: underline !important;}";
+            css += "#gmCacheInfo img.gclh_vip, #gmCacheInfo img.gclh_vup, #gmCacheInfo img.gclh_send {vertical-align: center !important;}";
+            css += ".popup_additional_info a.gclh_galleryImages {text-decoration-line: none !important;}";
+            css += ".popup_additional_info a.gclh_galleryImages:hover {text-decoration-line: underline !important;}";
+            if (settings_show_enhanced_map_coords) css += "div.popup_additional_info {min-height: 82px;}";
+            else css += "div.popup_additional_info {min-height: 64px;}";
+            css += "div.popup_additional_info {padding-top: 3px !important; padding-bottom: 4px !important;}";
+            css += "div.popup_additional_info .loading_container {display: flex; justify-content: center; align-items: center;}";
+            css += "div.popup_additional_info .loading_container img {margin-right: 5px;}";
+            css += "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg {position: relative; top: 4px;}";
+            css += ".popup_additional_info .LogTotals img {vertical-align: center;}";
             css += ".gclh_ctoc img {width: 14px; padding: 3px 1px 0 0; float: right;}";
             css += "div.gclh_latest_log, span.gclh_cache_note {margin-top:5px;}";
             css += "div.gclh_latest_log:hover, span.gclh_cache_note:hover {position: relative;}";
@@ -13323,11 +13336,10 @@ var mainGC = function() {
             css += "div.gclh_latest_log.mouseover:hover span, span.gclh_cache_note.mouseover:hover span {visibility: visible; font-size: 13px; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
             css += 'div.gclh_latest_log.mouseover:hover span img {opacity: 1;}';
             css += 'div.gclh_latest_log:hover img, span.gclh_cache_note:hover svg {opacity: 0.5;}';
-
-            css += "span.premium_only img {margin-right:0px;}";
+            css += "span.premium_only img {margin-right: 0px; vertical-align: middle !important;}";
             css += ".map-item .send2gps img {margin-right: 0px;}";
             css += ".LogTotals, .LogTotals li {display: inline-block; margin: 0;} .LogTotals li {margin-right: 5px;}";
-            css += ".gclh_owner {max-width: 110px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: clip; text-overflow: ellipsis;}";
+            css += ".gclh_owner {max-width: 105px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: clip; text-overflow: ellipsis;}";
             appendCssStyle(css);
 
             // Create an observer instance.
@@ -13343,12 +13355,20 @@ var mainGC = function() {
                     // so we have to load informations for all caches.
                     $('#gmCacheInfo .map-item').each(function () {
                         gccode = $(this).find('.code').html();
-
                         if ($('#already_loading_' + gccode)[0]) return;
-                        $(this).find('dl dt')[0].innerHTML = "";
-                        if (browser == 'firefox') {
-                            $(this).find('h4 a')[0].title = decode_innerHTML($(this).find('h4 a')[0]).replace(/<strike>/,'').replace(/<\/strike>/,'');
+
+                        $(this).find('h4 a')[0].title = decode_innerHTML($(this).find('h4 a')[0]).replace(/<strike>/,'').replace(/<\/strike>/,'');
+                        // "Created by:" durch Owner ersetzen um Platz für die VIP ... Icons zu machen.
+                        if (settings_show_vip_list || settings_show_mail || settings_show_message) {
                             $(this).find('dl dd')[0].childNodes[0].innerHTML = '<span class="gclh_owner" title="' + $(this).find('dl dd')[0].childNodes[0].innerHTML + '">' + $(this).find('dl dd')[0].childNodes[0].innerHTML + '</span>';
+                            $(this).find('dl dt')[0].innerHTML = $(this).find('dl dd')[0].innerHTML;
+                            $(this).find('dl dt')[0].style.setProperty('font-weight', 'normal', 'important');
+                            $(this).find('dl dd')[0].innerHTML = "<span></span>";
+                            $(this).find('dl dd')[0].style.setProperty('overflow', 'visible', 'important');
+                            // Shorten the maximum length of the owner's name for events.
+                            if (settings_show_eventday && $(this).find('.gclh_owner')[0] && $(this).find('h4 img')[0] && $(this).find('h4 img')[0].src.match(/\/mapicons\/(6|453|13|7005|3653)\.png/i)) {
+                                $(this).find('.gclh_owner')[0].style.setProperty('max-width', '93px', 'important');
+                            }
                         }
 
                         // Add hidden Div, so we can know, that we are already loading data.
@@ -13470,8 +13490,8 @@ var mainGC = function() {
                                 var imgCount = a[0].innerHTML.match(/(\s*)\((\d+)\)/);
                                 if (galleryLink && imgCount && imgCount[2]) {
                                     if (imgCount[2] == "0") new_text += '<span title="No Image Gallery"><a style="color: #939597; text-decoration: none;">';
-                                    else new_text += '<span title="View Image Gallery"><a href="' + galleryLink + '">';
-                                    new_text += '<img src="/images/icons/16/photo_gallery.png" style="height: 14px; vertical-align: text-bottom;">' + imgCount[2] + '</a></span> | ';
+                                    else new_text += '<span title="View Image Gallery"><a class="gclh_galleryImages" href="' + galleryLink + '">';
+                                    new_text += '<img src="/images/icons/16/photo_gallery.png" style="height: 14px; vertical-align: text-bottom;"> ' + imgCount[2] + '</a></span> | ';
                                 }
                             }
 
@@ -13547,9 +13567,9 @@ var mainGC = function() {
                             // Add Copy to Clipboard Links.
                             if (settings_show_enhanced_map_coords) {
                                 if (original_coords != "") {
-                                    addCopyToClipboardLink(original_coords, $('#popup_additional_info_' + local_gc_code + ' span.coordinates.original .anker')[0], "original Coordinates", 'vertical-align: bottom; margin-right: -6px;');
+                                    addCopyToClipboardLink(original_coords, $('#popup_additional_info_' + local_gc_code + ' span.coordinates.original .anker')[0], "original Coordinates", 'vertical-align: bottom;');
                                 }
-                                addCopyToClipboardLink(coords, $('#popup_additional_info_' + local_gc_code + ' span.coordinates.current')[0], corrected+"Coordinates", 'vertical-align: bottom; margin-right: -6px;');
+                                addCopyToClipboardLink(coords, $('#popup_additional_info_' + local_gc_code + ' span.coordinates.current')[0], corrected+"Coordinates", 'vertical-align: bottom;');
                             }
 
                             // Get favorite score.
@@ -13593,22 +13613,78 @@ var mainGC = function() {
                         });
 
                         // Improve Original Box Content.
-                        side = $(this).find('dl dd a');
-                        guid = side.attr('href').substring(15,36+15);
-                        username = side.text();
-                        buildSendIcons(side[0], username, "per guid", guid);
-                        if (settings_show_vip_list) {
-                            var link = gclh_build_vipvup(username, global_vips, "vip");
-                            link.children[0].style.marginLeft = "5px";
-                            link.children[0].style.marginRight = "3px";
-                            side[0].appendChild(link);
-                            // Build VUP Icon.
-                            if (settings_process_vup && username != global_activ_username) {
-                                link = gclh_build_vipvup(username, global_vups, "vup");
-                                link.children[0].setAttribute("style", "margin-left: 0px; margin-right: 0px");
+                        // Align all columns to the left, don't leave so much space between the label and the content, and reduce some white space ... .
+                        $(this).find('h4').each(function () {
+                            $(this)[0].style.setProperty('margin-top', '7px', 'important');
+                            $(this)[0].style.setProperty('margin-bottom', '0px', 'important');
+                            if ($(this).find('img')[0]) {
+                                $(this).find('img')[0].style.setProperty('margin-left', '-2px', 'important');
+                            }
+                        });
+                        $(this).find('dl').each(function () {
+                            $(this)[0].style.setProperty('margin-top', '6px', 'important');
+                            $(this)[0].style.setProperty('margin-bottom', '6px', 'important');
+                            $(this)[0].style.setProperty('grid-template-columns', 'auto auto auto auto', 'important');
+                        });
+                        $(this).find('dl dt').each(function () {
+                            $(this)[0].style.setProperty('text-align', 'left', 'important');
+                        });
+                        $(this).find('dl dd').each(function () {
+                            $(this)[0].style.setProperty('text-align', 'left', 'important');
+                            $(this)[0].style.setProperty('margin-left', '0px', 'important');
+                            if ($(this).find('svg image[src*="/fave_fill_16.png"]')[0] && $(this).find('span')[0]) {
+                                $(this).find('svg')[0].style.setProperty('vertical-align', 'top', 'important');
+                                $(this).find('span')[0].style.setProperty('vertical-align', 'unset', 'important');
+                            }
+                            if ($(this).find('img[src*="images/stars/stars"]')[0]) {
+                                $(this).find('img[src*="images/stars/stars"]')[0].style.setProperty('vertical-align', 'sub', 'important');
+                            }
+                        });
+                        if ($(this).find('.links')[0]) {
+                            $(this).find('.links')[0].style.setProperty('padding-top', '6px', 'important');
+                            $(this).find('.links')[0].style.setProperty('padding-bottom', '6px', 'important');
+                            for (var i = 0; i < $(this).find('.links')[0].childNodes.length; i++) {
+                                if ($(this).find('.links')[0].childNodes[i].nodeValue) {
+                                    $(this).find('.links')[0].childNodes[i].nodeValue = $(this).find('.links')[0].childNodes[i].nodeValue.trim();
+                                }
+                            }
+                            $($(this).find('.links')[0]).find('a').each(function () {
+                                for (var i = 0; i < $(this)[0].childNodes.length; i++) {
+                                    if ($(this)[0].childNodes[i].nodeValue) {
+                                        $(this)[0].childNodes[i].nodeValue = $(this)[0].childNodes[i].nodeValue.trim();
+                                    }
+                                }
+                                $(this)[0].style.setProperty('margin-right', '5px', 'important');
+                                if ($(this).find('img')[0]) {
+                                    $(this).find('img')[0].style.setProperty('margin-right', '2px', 'important');
+                                    $(this).find('img')[0].style.setProperty('vertical-align', 'sub', 'important');
+                                }
+                            });
+                        }
+                        if ($(this).find('.links')[1]) {
+                            $(this).find('.links')[1].style.setProperty('padding-top', '6px', 'important');
+                            $(this).find('.links')[1].style.setProperty('padding-bottom', '6px', 'important');
+                        }
+                        // Build VIP, VUP, Send Icons.
+                        if (settings_show_vip_list || settings_show_mail || settings_show_message) {
+                            var side = $(this).find('dl dd span');
+                            var user = $(this).find('dl dt a');
+                            var guid = user.attr('href').substring(15,36+15);
+                            var username = user.text();
+                            buildSendIcons(side[0], username, "per guid", guid);
+                            if (settings_show_vip_list) {
+                                var link = gclh_build_vipvup(username, global_vips, "vip");
+                                link.children[0].style.marginRight = "3px";
                                 side[0].appendChild(link);
+                                // Build VUP Icon.
+                                if (settings_process_vup && username != global_activ_username) {
+                                    link = gclh_build_vipvup(username, global_vups, "vup");
+                                    link.children[0].setAttribute("style", "margin-left: 0px; margin-right: 0px");
+                                    side[0].appendChild(link);
+                                }
                             }
                         }
+                        // Build copy to clipboard link for gc code.
                         addCopyToClipboardLink(gccode, $(this).find('h4')[0], "GC Code", "float: right;");
                     });
                 });
@@ -17773,7 +17849,7 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_switch_to_wmtmtb_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Cache Data</b>" + "</div>";
-            html += checkboxy('settings_show_enhanced_map_popup', 'Show enhanced cache data') + show_help("With this option, additional cache data will be shown in the pop-up on the Browse Map and in the cache detail screen on the left side of the Search Map. Additional cache data are for example the latest log symbols, the elevation data, the favorites in percentage, the number of the trackables, the personal cache note and further data.") + "<br>";
+            html += checkboxy('settings_show_enhanced_map_popup', 'Show enhanced cache data') + show_help("With this option, additional cache data will be shown in the pop-up on the Browse Map and in the cache detail screen on the left side of the Search Map.<br><br>Additional cache data are for example the latest log symbols, the elevation data, the favorites in percentage, the number of the trackables, the personal cache note and further data.<br><br>The pop-up on the browse map displays a more compact layout for the entire pop-up.") + "<br>";
             html += " &nbsp; &nbsp;" + "Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map'>";
             for (var i = 1; i <= 25; i++) {
                 html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count_map == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
@@ -17891,7 +17967,7 @@ var mainGC = function() {
             for (var i = 0; i < eventCalendar.length; i++) {
                 html += "  <option value='" + eventCalendar[i] + "' " + (settings_default_calendar_link_for_event == eventCalendar[i] ? "selected='selected'" : "") + "> " + eventCalendar[i] + "</option>";
             }
-            html += "</select>" + show_help("Here you can set the default calendar for an event listing. A selection in the calendar popup in the event listing is no longer necessary.") + "<br>";
+            html += "</select>" + show_help("Here you can set the default calendar for an event listing. A selection in the calendar pop-up in the event listing is no longer necessary.") + "<br>";
             html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += checkboxy('settings_show_latest_logs_symbols', 'Show the ');
             html += "<select class='gclh_form' id='settings_show_latest_logs_symbols_count'>";
