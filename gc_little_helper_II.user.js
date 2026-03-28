@@ -2308,33 +2308,6 @@ var mainGC = function() {
         appendCssStyle(css);
     }
 
-// Relocate a specific GS <style> directly before all other style elements.
-// This ensures that the later applied gclh rules "win", since later applied styles take precedence over previous applied ones.
-// Otherwise, this specific GS style interferes with the gclh styles for config and page width.
-    if (is_page("cache_listing")) {
-        try {
-            // This rule is included in the GS style and is used to identify it.
-            const rule = '.container{width:970px}';
-            function relocateMatchingStyles() {
-                let $styles = $('style').filter(function() {
-                    return this.textContent.indexOf(rule) !== -1;
-                });
-                if ($styles[0]) {
-                    $styles.insertBefore('head style:first');
-                    return true;
-                }
-                return false;
-            }
-            // If the style is already present, move it, otherwise observe the page for future <style> nodes.
-            if (!relocateMatchingStyles()) {
-                const styleObserver = new MutationObserver(function() {
-                    if (relocateMatchingStyles()) styleObserver.disconnect();
-                });
-                styleObserver.observe(document.documentElement, {childList: true, subtree: true});
-            }
-        } catch(e) {gclh_error("Moving style element",e);}
-    }
-
 // Disabled and archived ...
     if (is_page("cache_listing")) {
         try {
@@ -5330,7 +5303,7 @@ var mainGC = function() {
             } catch(e) {gclh_error("Build an observer for TBs in improve log form",e);}
 
             // Append the style.
-            if (!$('#gclh_css_improveLogForm')[0]) appendCssStyle(css, 'head', 'gclh_css_improveLogForm');
+            if (!$('#gclh_css_improveLogForm')[0]) appendCssStyle(css, null, 'gclh_css_improveLogForm');
         } catch(e) {gclh_error("Improve log form",e);}
     }
 
@@ -5409,7 +5382,7 @@ var mainGC = function() {
             } catch(e) {gclh_error("Prevent links automatically open in new tab in improve log view",e);}
 
             // Append the style.
-            if (!$('#gclh_css_improveLogView')[0]) appendCssStyle(css, 'head', 'gclh_css_improveLogView');
+            if (!$('#gclh_css_improveLogView')[0]) appendCssStyle(css, null, 'gclh_css_improveLogView');
         } catch(e) {gclh_error("Improve log view",e);}
     }
 
@@ -16603,7 +16576,7 @@ var mainGC = function() {
             css += '.qtip.pop-modal .add-list .status.success, .qtip.pop-modal .add-list .success-message {right: 2px !important; padding: 0 15px 0px 5px !important; background-color: white !important; color: #E0B70A !important;}';
             css += '.qtip.pop-modal .add-list .status .loading {right: 12px !important;}';
         }
-        if (!css == '' && !$('#gclh_addToList')[0]) appendCssStyle(css, 'head', 'gclh_addToList');
+        if (!css == '' && !$('#gclh_addToList')[0]) appendCssStyle(css, null, 'gclh_addToList');
         // Determine cache guid.
         var cacheGuidWptTypeID = determineCacheGuidOwnBMLs(gcCode);
         // Get and display count and names of own BMLs.
@@ -20556,7 +20529,7 @@ var mainGC = function() {
         css += id + ' .cff_content {margin-left: 32px; margin-bottom: -2px; margin-top: 2px; display: none;}';
         css += id + ' .cff_value {width: ' + widthValue + 'px; height: ' + heightValue + 'px;}';
         css += id + ' .cff_create {margin-left: 0px; margin-top: 2px;}';
-        appendCssStyle(css, '', ident + '_main_css');
+        appendCssStyle(css, null, ident + '_main_css');
     }
     function getLastIdNrCff(ident) {
         var id = '#' + ident + '_main';
@@ -21781,6 +21754,9 @@ function repApo(s) {
 function appendCssStyle(css, name, id) {
     if (document.getElementById(id)) return;
     if (css == "") return;
+    // In cache listings, all styles need to be located in <body>, except 'header' is explicitly requested.
+    // Otherwise GS styles may override ours (later applied styles take precedence over previous applied ones).
+    if (is_page('cache_listing') && !name) name = 'body';
     if (name) var tag = $(name)[0];
     else var tag = $('head')[0];
     var style = document.createElement('style');
