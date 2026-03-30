@@ -309,6 +309,7 @@
   "settings_searchmap_autoupdate_after_dragging": false,
   "settings_map_percentage_statistic": true,
   "settings_improve_character_counter": true,
+  "settings_browsemap_compact_layout_sidebar": true,
   "settings_searchmap_compact_layout": true,
   "settings_searchmap_disabled": false,
   "settings_searchmap_disabled_strikethrough": true,

@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.18.1
+// @version      0.18.2
 //<-- $$000
 // @copyright    2016-2026 2Abendsegler, 2019-2026 capoaira, 2025-2026 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -672,6 +672,7 @@ var variablesInit = function(c) {
     c.settings_lists_back_to_top = getValue("settings_lists_back_to_top", false);
     c.settings_searchmap_autoupdate_after_dragging = getValue("settings_searchmap_autoupdate_after_dragging", true);
     c.settings_improve_character_counter = getValue("settings_improve_character_counter", true);
+    c.settings_browsemap_compact_layout_sidebar = getValue("settings_browsemap_compact_layout_sidebar", true);
     c.settings_searchmap_compact_layout = getValue("settings_searchmap_compact_layout", true);
     c.settings_searchmap_disabled = getValue("settings_searchmap_disabled", false);
     c.settings_searchmap_disabled_strikethrough = getValue("settings_searchmap_disabled_strikethrough", true);
@@ -1559,6 +1560,7 @@ var mainGC = function() {
     }
 
 // Set language to default language.
+// (This only works if the language selector is present in the footer. Therefore, it doesn't work on Browse Map and on Search Map.)
     tlc('START Set language');
     try {
         var langu_string = langus_code[langus.indexOf(settings_default_langu)] + '-';
@@ -1773,6 +1775,15 @@ var mainGC = function() {
                 // Alle Seiten: Grundeinstellungen:
                 // ----------
                 var css = "";
+                // Alignment of menu content (links and menus).
+                css += "gclh_nav ul.menu {display: flex;}";
+                css += "gclh_nav ul.menu>li>a {display: flex !important; align-items: center;}";
+                css += ".menu>li {height: unset;}";
+                // Bei vertikalem Menü und bei einzeiligem horizontalem Menü, sicherstellen, dass die Untermenüs der vertikalen Menüelemente beim
+                // Drüberfahren mit der Maus geöffnet bleiben.
+                if (settings_bookmarks_top_menu || (!settings_bookmarks_top_menu && settings_menu_number_of_lines == 1)) {
+                    css += "ul.menu > li {margin-top: 18px !important;} gclh_nav ul.menu > li > a, #navi_search, .menu_separator {margin-bottom: 18px !important;}";
+                }
                 // Font-Size für Menüs, Font-Size für Untermenüs in Pixel.
                 var font_size_menu = parseInt(settings_font_size_menu);
                 if ((font_size_menu == 0) || (font_size_menu < 0) || (font_size_menu > 16)) font_size_menu = 16;
@@ -1817,7 +1828,9 @@ var mainGC = function() {
                     ".#m li a, .#m li a:link, .#m li a:visited, .#m li {color: #" + font_color_menu + " !important;}" +
                     ".#m li a:hover, .#m li a:focus {color: #FFFFFF !important; outline: unset !important;}" +
                     // Schriftfarbe Search Field.
-                    "#navi_search {color: #4a4a4a;} #navi_search:focus, #navi_search:focus-visible, #navi_search:active {outline: none; box-shadow: none;}" +
+                    "#navi_search {color: #4a4a4a;} #navi_search:focus, #navi_search:focus-visible, #navi_search:active {outline: none !important; box-shadow: none !important;}" +
+                    // Separator.
+                    ".menu_separator {padding-bottom: 2px !important;}" +
                     // Submenü im Vordergrund.
                     ".#m .#sm {z-index: 1001;}" +
                     // Schriftfarbe Untermenü.
@@ -1841,22 +1854,15 @@ var mainGC = function() {
                     ".#m .#sm {margin-left: 0 !important}";
                 // Vertikales Menü ausrichten.
                 if (settings_bookmarks_top_menu) {
-                    // Menüzeilenhöhe, Menü nicht flex.
+                    // Menüzeilenhöhe.
                     css += "ul.#m {line-height: 16px; display: block;}";
-                    // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappts nicht mit einfachem Aufklappen.
-                    css += ".#m li a, .#m li a:link, .#m li a:visited {margin-bottom: 13px;} .#m ul.#sm {margin-top: -6px;}";
                 // Horizontales Menü ausrichten.
                 } else {
                     // Menüzeilenhöhe.
                     css += "ul.#m {line-height: 16px !important;}";
                     // Zeilenabstand in Abhängigkeit von Anzahl Zeilen.
                     if      (settings_menu_number_of_lines == 2) css += "ul.#m li a {padding-top: 4px !important; padding-bottom: 4px !important;}";
-                    else if (settings_menu_number_of_lines == 3) css += "ul.#m li a {padding-top: 1px !important; padding-bottom: 1px !important;}";
-                    css += "gclh_nav ul.menu {display: flex;}";
-                    css += "gclh_nav ul.menu>li>a {height: 60px; display: flex !important; align-items: center;}";
-                    css += ".menu>li {height: unset;}";
-                    css += "#l {flex: none !important; flex-basis: 32px;}";
-                    css += "#navi_search {margin: 0px !important}";
+                    else if (settings_menu_number_of_lines == 3) css += "ul.#m li a {padding-top: 3px !important; padding-bottom: 3px !important;}";
                 }
                 // Message Center Icon entfernen.
                 if (settings_remove_message_in_header) $('.messagecenterheaderwidget').remove();
@@ -1866,7 +1872,7 @@ var mainGC = function() {
                     changeGcLogo(side);
                 }
                 css +=
-                    "#l {flex: unset; overflow: unset; margin-left: -32px} #newgclogo {width: 30px !important;}" +
+                    "#l {flex: none; flex-basis: 32px; overflow: unset; margin-left: -32px} #newgclogo {width: 30px !important;}" +
                     ".#m {width: " + new_width_menu + "px !important; margin-left: 6px !important;}" +
                     "nav .wrapper, gclh_nav .wrapper {min-width: " + (new_width + 40) + "px !important; max-width: unset;}";
                 // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
@@ -1881,26 +1887,19 @@ var mainGC = function() {
                     css += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
                     // Vertikales Menü ausrichten.
                     if (settings_bookmarks_top_menu) {
-                        if (is_page("find_cache") || (is_page("settings") && document.location.pathname.match(/^\/live\//))) {
-                            css += ".#m li:not(.attention-link-parent) ul.#sm {margin-top: 17px;}";
-                        }
-                        css += ".#m ul.#sm {margin-top: 0px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
-                        // Menü, Searchfield ausrichten in Abhängigkeit von Schriftgröße. Menü nicht flex.
+                        css += ".#m ul.#sm {margin-top: -2px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
+                        // Menü, Searchfield ausrichten.
                         if (settings_menu_float_right) {
-                            css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
+                            css += "gclh_nav ul.menu {justify-content: flex-end;}";
                         } else {
-                            if (is_page("map")) css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
-                            else css += "ul.#m > li {margin-top: " + (4 + (16 - font_size_menu) / 2) + "px;}";
+                            css += "gclh_nav ul.menu {justify-content: flex-start;}";
                         }
-                        // Menü in Karte ausrichten.
-                        if (is_page("map") && !settings_menu_float_right) css += ".#m {height: unset !important;}";
-                        if (is_page("map") && settings_menu_float_right) css += "#navi_search {margin: 0 !important;}";
                     // Horizontales Menü ausrichten in Abhängigkeit von Anzahl Zeilen.
                     } else {
-                        css += ".#m ul.#sm {margin-top: 0px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
+                        css += ".#m ul.#sm {margin-top: -2px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
                         if      (settings_menu_number_of_lines == 1) css += "ul.#m {top:   0px !important; position: inherit;}";
-                        else if (settings_menu_number_of_lines == 2) css += "ul.#m {top:  -8px !important; position: inherit; flex-wrap: wrap;} gclh_nav ul.menu>li>a {height: auto !important}";
-                        else if (settings_menu_number_of_lines == 3) css += "ul.#m {top: -13px !important; position: inherit; flex-wrap: wrap;} gclh_nav ul.menu>li>a {height: auto !important}";
+                        else if (settings_menu_number_of_lines == 2) css += "ul.#m {top:  -8px !important; position: inherit; flex-wrap: wrap;} .#m .submenu::after {top: 5px}";
+                        else if (settings_menu_number_of_lines == 3) css += "ul.#m {top: -18px !important; position: inherit; flex-wrap: wrap;} .#m .submenu::after {top: 5px}";
                     }
                     // Prevent the user area in the header from moving to the left on narrow screens.
                     css += "ul.menu {order: unset;} #ctl00_uxLoginStatus_divSignedIn {height: auto;} .messagecenterheaderwidget.li-messages {position: static;}";
@@ -1916,25 +1915,19 @@ var mainGC = function() {
                     }
                     // Vertikales Menü  ausrichten.
                     if (settings_bookmarks_top_menu) {
-                        if (is_page("cache_listing") && $('.ul__cache-details.unstyled')[0]) {
-                            css += ".#m ul.#sm {margin-top: -10px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
-                        } else {
-                            css += ".#m ul.#sm {margin-top: 17px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
-                        }
-                        // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappt das nicht mit dem einfachen Aufklappen.
-                        css += ".#m > li .dropdown {padding-bottom: 14px !important;}";
-                        // Menü, Searchfield ausrichten in Abhängigkeit von Schriftgröße. Menü nicht flex.
+                        css += ".#m ul.#sm {margin-top: -2px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
+                        // Menü, Searchfield ausrichten.
                         if (settings_menu_float_right) {
-                            css += "ul.#m > li {margin-top: " + (7 + (16 - font_size_menu) / 2) + "px;}";
+                            css += "gclh_nav ul.menu {justify-content: flex-end;}";
                         } else {
-                            css += "ul.#m > li {margin-top: " + (5 + (16 - font_size_menu) / 2) + "px;}";
+                            css += "gclh_nav ul.menu {justify-content: flex-start;}";
                         }
                     // Horizontales Menü ausrichten in Abhängigkeit von Anzahl Zeilen.
                     } else {
-                        css += ".#m ul.#sm {margin-top: 0px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
+                        css += ".#m ul.#sm {margin-top: -2px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
                         if      (settings_menu_number_of_lines == 1) css += "ul.#m {top:   0px !important; position: inherit;}";
-                        else if (settings_menu_number_of_lines == 2) css += "ul.#m {top:  -8px !important; position: inherit; flex-wrap: wrap;} gclh_nav ul.menu>li>a {height: auto !important}";
-                        else if (settings_menu_number_of_lines == 3) css += "ul.#m {top: -13px !important; position: inherit; flex-wrap: wrap;} gclh_nav ul.menu>li>a {height: auto !important}";
+                        else if (settings_menu_number_of_lines == 2) css += "ul.#m {top:  -8px !important; position: inherit; flex-wrap: wrap;} .#m .submenu::after {top: 5px}";
+                        else if (settings_menu_number_of_lines == 3) css += "ul.#m {top: -18px !important; position: inherit; flex-wrap: wrap;} .#m .submenu::after {top: 5px}";
                     }
                 }
                 // Alle Seiten: Platzhalter umsetzen:
@@ -2080,10 +2073,6 @@ var mainGC = function() {
                     appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 2.0em;}");
                 }
             }
-            // On browse map, if Change Header Layout is disabled, ensure that search field is aligned correctly.
-            if (!settings_change_header_layout && is_page("map")) {
-                appendCssStyle(".menu input, .Menu input {margin: 0;}");
-            }
             if (settings_bookmarks_on_top && $('.Menu, .menu').length > 0) {
                 var nav_list = $('.Menu, .menu')[0];
                 var menu = document.createElement("li");
@@ -2138,7 +2127,7 @@ var mainGC = function() {
                     code += "  else document.location.href = '/seek/nearest.aspx?navi_search='+search;";
                     code += "}";
                     injectPageScript(code, "body");
-                    var searchfield = "<li><input onKeyDown='if (event.keyCode==13 && event.altKey == false && event.shiftKey == false) {gclh_search_logs(!!event.ctrlKey); return false;}' type='text' size='" + (browser == 'firefox' ? "9":"7") + "' name='navi_search' id='navi_search' style='margin-bottom: -1px; padding: 1px; font-weight: bold; font-family: sans-serif; border-radius: 7px 7px 7px 7px; width: auto;' value='" + settings_bookmarks_search_default + "'></li>";
+                    var searchfield = "<li><input onKeyDown='if (event.keyCode==13 && event.altKey == false && event.shiftKey == false) {gclh_search_logs(!!event.ctrlKey); return false;}' type='text' size='" + (browser == 'firefox' ? "9":"7") + "' name='navi_search' id='navi_search' style='" + (settings_change_header_layout ? 'margin: 1px 0px 0px 0px;' : 'margin: 0px;') + " padding: 1px; font-weight: bold; font-family: sans-serif; border-radius: 7px 7px 7px 7px; width: auto; height: 24px !important;' value='" + settings_bookmarks_search_default + "'></li>";
                     $(".Menu, .menu").append(searchfield);
                 }
 
@@ -2150,19 +2139,8 @@ var mainGC = function() {
                             var separator = document.createElement("li");
                             separator.appendChild(document.createTextNode("|"));
                             if ($(menuChilds[i-1]).hasClass("mobile")) $(separator).addClass("mobile");
+                            $(separator).addClass("menu_separator");
                             menuChilds[i].parentNode.insertBefore(separator, menuChilds[i]);
-                        }
-                    }
-                }
-                // Vertikale Menüs rechts ausrichten.
-                if (settings_bookmarks_top_menu && settings_menu_float_right && settings_change_header_layout) {
-                    if ($('ul.Menu, ul.menu')[0]) {
-                        var menu = $('ul.Menu, ul.menu')[0];
-                        var menuChilds = $('ul.Menu, ul.menu')[0].children;
-                        for (var i = 0; i < menuChilds.length; i++) {
-                            var child = menu.removeChild(menu.children[menuChilds.length-1-i]);
-                            child.setAttribute("style", "float: right;");
-                            menu.appendChild(child);
                         }
                     }
                 }
@@ -2330,33 +2308,6 @@ var mainGC = function() {
         // Show log totals symbols above the logs again in one line.
         css += ".LogTotals {padding-left: 0px; display: flex; margin-bottom: 8px;} .LogTotals li {align-items: center; display: flex;} .LogTotals li + li {margin-left: 10px;} .LogTotals img {vertical-align: bottom;}";
         appendCssStyle(css);
-    }
-
-// Relocate a specific GS <style> directly before all other style elements.
-// This ensures that the later applied gclh rules "win", since later applied styles take precedence over previous applied ones.
-// Otherwise, this specific GS style interferes with the gclh styles for config and page width.
-    if (is_page("cache_listing")) {
-        try {
-            // This rule is included in the GS style and is used to identify it.
-            const rule = '.container{width:970px}';
-            function relocateMatchingStyles() {
-                let $styles = $('style').filter(function() {
-                    return this.textContent.indexOf(rule) !== -1;
-                });
-                if ($styles[0]) {
-                    $styles.insertBefore('head style:first');
-                    return true;
-                }
-                return false;
-            }
-            // If the style is already present, move it, otherwise observe the page for future <style> nodes.
-            if (!relocateMatchingStyles()) {
-                const styleObserver = new MutationObserver(function() {
-                    if (relocateMatchingStyles()) styleObserver.disconnect();
-                });
-                styleObserver.observe(document.documentElement, {childList: true, subtree: true});
-            }
-        } catch(e) {gclh_error("Moving style element",e);}
     }
 
 // Disabled and archived ...
@@ -2601,7 +2552,7 @@ var mainGC = function() {
                         ul.innerHTML += $(this)[0].outerHTML;
                     });
                     div.appendChild(ul);
-                    $('#ctl00_ContentBody_size')[0].parentNode.insertBefore(div, $('#ctl00_ContentBody_size')[0].nextSibling.nextSibling.nextSibling);
+                    $('#ctl00_ContentBody_size')[0].parentNode.after(div);
                     appendCssStyle('.gclh_LogTotals {float: right;} .gclh_LogTotals li {display: inline;} .gclh_LogTotals img {vertical-align: bottom;} .gclh_LogTotals li + li {margin-left: 10px;} .gclh_LogTotals ul {margin-bottom: 0px;}');
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForLogTotals(waitCount);}, 100);}
             }
@@ -5354,7 +5305,7 @@ var mainGC = function() {
             } catch(e) {gclh_error("Build an observer for TBs in improve log form",e);}
 
             // Append the style.
-            if (!$('#gclh_css_improveLogForm')[0]) appendCssStyle(css, 'head', 'gclh_css_improveLogForm');
+            if (!$('#gclh_css_improveLogForm')[0]) appendCssStyle(css, null, 'gclh_css_improveLogForm');
         } catch(e) {gclh_error("Improve log form",e);}
     }
 
@@ -5433,7 +5384,7 @@ var mainGC = function() {
             } catch(e) {gclh_error("Prevent links automatically open in new tab in improve log view",e);}
 
             // Append the style.
-            if (!$('#gclh_css_improveLogView')[0]) appendCssStyle(css, 'head', 'gclh_css_improveLogView');
+            if (!$('#gclh_css_improveLogView')[0]) appendCssStyle(css, null, 'gclh_css_improveLogView');
         } catch(e) {gclh_error("Improve log view",e);}
     }
 
@@ -7783,14 +7734,14 @@ var mainGC = function() {
             (is_page("cache_listing")                                            ||      // Cache Listing (nicht in den Logs)
              is_page("owner_dashboard")                                          ||      // Owner Dashboard
              is_page("publicProfile")                                            ||      // Öffentliches Profil
-             is_page("searchmap")                                                ||      // Search Map / New Map
+             is_page("map")                                                      ||      // Browse Map (For enhanced Pop-up Informations)
+             is_page("searchmap")                                                ||      // Search Map
              document.location.href.match(/\.com\/track\/details\.aspx/)         ||      // TB Listing
              document.location.href.match(/\.com\/(seek|track)\/log\.aspx/)      ||      // Post, Edit, View Cache und TB Logs
                                                                                          // Log form, log edit, log view redesigned new log page
              document.location.href.match(/\/live\/(?:log\/(?:gl|tl)|(?:geocache|trackable)\/(?:gc|tb))[a-z0-9]+/i) ||
              document.location.href.match(/\.com\/email\//)                      ||      // Mail schreiben
              document.location.href.match(/\.com\/my\/inventory\.aspx/)          ||      // TB Inventar
-             document.location.href.match(/\.com\/map/)                          ||      // Map (For enhanced Pop-up Informations)
              document.location.href.match(/\.com\/account\/dashboard/)           ||      // Dashboard
              document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/) ||  // Nearest Lists mit User
              document.location.href.match(/\.com\/play\/(friendleague|leaderboard)/) ||  // Friend League, Leaderboard
@@ -8465,6 +8416,10 @@ var mainGC = function() {
 
             // Owner Dashbord:
             // The VIP/VUP for the Owner Dashboard is in the Owner Dashboard section because a mutation observer is required.
+            // ----------
+
+            // Browse Map:
+            // The VIP/VUP for the Browse Map is in the Browse Map section (function cachePopupOnBrowseMap) because a mutation observer is required.
             // ----------
 
             // Search Map:
@@ -12723,7 +12678,7 @@ var mainGC = function() {
     if (is_page("map")) {
         try {
             function checkBrowseMap(waitCount) {
-                if ($('.leaflet-container')[0] || $('.Map.Google')[0]) {
+                if (($('.leaflet-container')[0] || $('.Map.Google')[0]) && $('.Sidebar')[0]) {
                     // Display Google-Maps warning, wenn Leaflet-Map nicht aktiv ist.
                     googleMapsWarningOnBrowseMap();
                     // Add layers, control to map and set default layers.
@@ -12746,24 +12701,29 @@ var mainGC = function() {
                     if (!$('#uxGoogleMapsSelect')[0]) {
                         hideCachesOnBrowseMap();
                     }
+                    // Compact layout on sidebar.
+                    if (settings_browsemap_compact_layout_sidebar) {
+                        compactLayoutSidebarBrowseMap(0);
+                    }
                     // Save as PQ and set defaults for Browse Map.
                     saveAsPQOnBrowseMap();
                     // Display more informations on Browse Map pop up for a cache.
                     if (settings_show_enhanced_map_popup && getValue("gclhLeafletMapActive")) {
                         cachePopupOnBrowseMap();
                     }
+                    // Enable Linklist, config and sync scrolling on Browse Map.
+                    $('body')[0].style.setProperty('overflow', 'visible', 'important');
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkBrowseMap(waitCount);}, 100);}
             }
             checkBrowseMap(0);
             var css = '';
             // Damit auch mehr als 2 rechte Buttons handlebar.
             css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
-            // Improve the first scale line on the left side.
+            // Improve the scale lines on the left side.
+            css += '.leaflet-control-scale {margin-bottom: 18px !important; margin-left: 1px !important;}';
             css += '.leaflet-control-scale-line:first-child {box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2) !important;}';
             // Improve clickability on list names of add to list pop up.
             css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
-            // Enable Linklist, config and sync scrolling on Browse Map.
-            css += "body {overflow: visible;}";
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Browse Map",e);}
     }
@@ -12978,26 +12938,83 @@ var mainGC = function() {
 // Hide Map Header.
     function hideHeaderOnBrowseMap() {
         try {
-            function checkMapLeaflet(waitCount) {
-                if ($('.leaflet-container')[0]) {
+            function checkMap(waitCount) {
+                if ($('.leaflet-container')[0] || $('.Map.Google')[0]) {
                     if (settings_hide_map_header) hide_map_header();
-                    var sidebar = $('#searchtabs')[0];
-                    var link = document.createElement("a");
-                    link.appendChild(document.createTextNode("Hide/Show Header"));
-                    link.href = "#";
-                    link.addEventListener("click", hide_map_header, false);
-                    // Link in Sidebar rechts orientieren wegen möglichem GC Tour script.
-                    link.setAttribute("style", "float: right; padding-right: 3px;");
-                    sidebar.appendChild(link);
+                    $('#searchtabs').append('<a class="gclh_hideMapHeader" href="#">Hide/Show Header</a>');
+                    $('.gclh_hideMapHeader')[0].addEventListener("click", hide_map_header, false);
+                    var css = '';
+                    css += '.gclh_hideMapHeader {text-decoration-line: none;} .gclh_hideMapHeader:hover {text-decoration-line: underline;}';
+                    // Link in Sidebar rechts orientieren wegen möglichem GC Tour Icon.
+                    css += '.gclh_hideMapHeader {float: right; padding-right: 3px;}';
                     // Link in Sidebar komplett anzeigen und auch nicht mehr überblenden, auch nicht durch GME.
-                    appendCssStyle("#searchtabs {height: 63px !important; margin-top: 6px !important;} #searchtabs li a {padding: 0.625em 0.5em !important;}");
+                    css += '#searchtabs {height: 63px !important; margin-top: 6px !important;} #searchtabs li a {padding: 0.625em 0.5em !important;}';
+                    appendCssStyle(css);
                 } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkMapLeaflet(waitCount);}, 100);}
             }
-            if (settings_map_show_btn_hide_header) checkMapLeaflet(0);
+            if (settings_map_show_btn_hide_header) checkMap(0);
             gclh_GetGcAccessToken( function(r) {
                 all_map_layers["Geocaching"].accessToken = r.access_token;
             });
         } catch(e) {gclh_error("Hide Map Header",e);}
+    }
+
+// Compact layout sidebar Browse Map.
+    function compactLayoutSidebarBrowseMap(waitCount) {
+        if ($('#searchtabs')[0] && $('#searchtabs ul li a')[0]) {
+            $('#searchtabs')[0].style.setProperty('margin-top', '10px', 'important');
+            $('#searchtabs')[0].style.setProperty('margin-bottom', '10px', 'important');
+            $('#searchtabs')[0].style.setProperty('height', '38px', 'important');
+            $('#searchtabs ul li a').each(function () {
+                $(this)[0].style.setProperty('padding-top', '8px', 'important');
+                $(this)[0].style.setProperty('padding-bottom', '8px', 'important');
+            });
+        }
+        if ($('#scrollbar')[0]) $('#scrollbar')[0].style.setProperty('top', '58px', 'important');
+        if ($('#scrollbar')[0]) $('#scrollbar')[0].style.setProperty('bottom', '64px', 'important');
+        if ($('.Sidebar footer')[0]) $('.Sidebar footer')[0].style.setProperty('height', '54px', 'important');
+        if (settings_map_show_btn_hide_header) {
+            if ($('#searchtabs')[0] && $('#scrollbar')[0]) {
+                $('#searchtabs')[0].style.setProperty('margin-bottom', '0px', 'important');
+                $('#searchtabs')[0].style.setProperty('height', '60px', 'important');
+                $('#scrollbar')[0].style.setProperty('top', '70px', 'important');
+            }
+        }
+        if ($('#search .SearchBox')[0]) {
+            $('#search .SearchBox')[0].style.setProperty('margin-top', '0px', 'important');
+            $('#search .SearchBox')[0].style.setProperty('margin-bottom', '10px', 'important');
+            $('#search .SearchBox')[0].style.setProperty('margin-right', '10px', 'important');
+        }
+        if ($('#SearchBox_Text')[0]) $('#SearchBox_Text')[0].style.setProperty('outline', 'none', 'important');
+        $('#search .Filters p').each(function () {
+            $(this)[0].style.setProperty('margin-top', '10px', 'important');
+            $(this)[0].style.setProperty('margin-bottom', '5px', 'important');
+        });
+        if ($('.Sidebar footer')[0]) $('.Sidebar footer')[0].style.setProperty('padding-right', '24px', 'important');
+        $('.Sidebar footer p').each(function () {
+            $(this)[0].style.setProperty('margin-top', '0px', 'important');
+            $(this)[0].style.setProperty('margin-bottom', '5px', 'important');
+            $(this)[0].style.setProperty('line-height', '14px', 'important');
+        });
+        if ($('#lnkMapPreferences')[0]) {
+            $('#lnkMapPreferences')[0].style.setProperty('padding-top', '4px', 'important');
+            $('#lnkMapPreferences')[0].style.setProperty('padding-bottom', '4px', 'important');
+        }
+        $('.Sidebar footer .LinkField').remove();
+        $('.Sidebar br').each(function () { this.remove(); });
+        if (!$('#gclh_compactLayout')[0]) {
+            var css = '';
+            css += '.Sidebar h3, .Sidebar h4 {margin-top: 0px !important; padding-top: 5px !important; padding-bottom: 0px !important; margin-bottom: 5px !important; font-size: 16px; border-top: none;}';
+            if (settings_map_show_btn_hide_header) {
+                css += '#search > h3, #pq h3 {padding-top: 0px !important;}';
+            }
+            css += '#PQList ul li a {padding-top: 1px !important; padding-bottom: 1px !important;}';
+            css += '#PQDetails ul li a {padding-top: 0px !important; padding-bottom: 0px !important;}';
+            css += '#PQDetails ul li a img {height: 22px !important; width: 22px !important;}';
+            css += '.Sidebar input {outline: none !important;}';
+            appendCssStyle(css, null, 'gclh_compactLayout');
+        }
+        waitCount++; if (waitCount <= 500) setTimeout(function(){compactLayoutSidebarBrowseMap(waitCount);}, 10);
     }
 
 // Change map parameter and add homezone to map.
@@ -13204,13 +13221,14 @@ var mainGC = function() {
                     if ($('#search-map-cta')[0] && $('.leaflet-top.leaflet-right')[0]) {
                         $('.leaflet-top.leaflet-right').append('<div id="gclh_search_map" class="leaflet-control-layers leaflet-control" title="Search geocaches"></div>');
                         $('#gclh_search_map').append($('#search-map-cta').remove().get().reverse());
+                        $('#gclh_search_map a').attr('class', '');
                         $('#gclh_search_map a')[0].childNodes[2].remove();
                         var css = '';
                         css += '.leaflet-top.leaflet-right {top: unset;}';
-                        css += '.map-cta {opacity: 0.8; background-color: rgb(248, 248, 249); width: 36px; height: 36px; border: unset; box-shadow: unset; line-height: unset; padding: unset; position: unset;}';
-                        css += '#gclh_search_map, #gclh_search_map > a {z-index: 1018;}';
+                        css += '#gclh_search_map {width: 28px; height: 28px; align-items: center; display: flex !important; justify-content: center; outline: none;  padding: 4px; position: relative; z-index: 1018;}';
+                        css += '#gclh_search_map:hover {background-color: #fff;}';
+                        css += '#gclh_search_map a {opacity: 0.8; margin-top: 4px;}';
                         css += '#gclh_search_map svg {margin: 0; padding: 9px 7px 6px 7px; color: #02874d;}';
-                        css += '.map-cta:hover {background-color: #e6f7ef;}';
                         appendCssStyle(css);
                     }
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){relocatingSearchMapButton(waitCount);}, 100);}
@@ -13316,7 +13334,7 @@ var mainGC = function() {
         try {
             function waitForSavePQ(waitCount) {
                 if ($('.pq-dl')[0] && $('#lnk_savepq')[0]) {
-                    $('.pq-dl').append('<div class="set_defaults toggle-filter"><span class="label" title="Set GClh defaults for new PQs.\nThe Map Filters overwrite the GClh defaults.">&nbsp;|&nbsp;Set defaults</span></div><div class="gclh_toggle-handle"></div>');
+                    $('.pq-dl').append('<div class="set_defaults toggle-filter"><span class="label" title="Set GClh defaults for new PQs.\nThe Map Filters overwrite the GClh defaults.">' + (global_isBasic ? '':'&nbsp;|&nbsp;') + 'Set defaults</span></div><div class="gclh_toggle-handle"></div>');
                     $('.pq-dl .gclh_toggle-handle')[0].onclick = function() {
                         $('.pq-dl .gclh_toggle-handle').toggleClass('on');
                         setValue('set_switch_browsemap_set_defaults', $('.pq-dl .gclh_toggle-handle.on')[0] ? true:false);
@@ -13359,12 +13377,21 @@ var mainGC = function() {
             // Select the target node.
             var target = document.querySelector('.leaflet-popup-pane');
 
-            if (settings_show_enhanced_map_coords) var css = "div.popup_additional_info {min-height: 82px;}";
-            else var css = "div.popup_additional_info {min-height: 64px;}";
-            css += "div.popup_additional_info .loading_container{display: flex; justify-content: center; align-items: center;}"
-            css += "div.popup_additional_info .loading_container img{margin-right:5px;}"
-            css += "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
-            css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px;}";
+            var css = '';
+            css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px !important;}";
+            css += ".leaflet-popup-content {margin-left: 10px !important; margin-right: 10px !important;}";
+            css += "#gmCacheInfo h4 a, #gmCacheInfo dl a, #gmCacheInfo dl a span, #gmCacheInfo .links:not(.popup_additional_info) a {text-decoration-line: none !important;}";
+            css += "#gmCacheInfo h4 a:hover, #gmCacheInfo dl a:hover, #gmCacheInfo dl a span:hover, #gmCacheInfo .links:not(.popup_additional_info) a:hover {text-decoration-line: underline !important;}";
+            css += "#gmCacheInfo img.gclh_vip, #gmCacheInfo img.gclh_vup, #gmCacheInfo img.gclh_send {vertical-align: revert-layer !important;}";
+            css += ".popup_additional_info a.gclh_galleryImages {text-decoration-line: none !important;}";
+            css += ".popup_additional_info a.gclh_galleryImages:hover {text-decoration-line: underline !important;}";
+            if (settings_show_enhanced_map_coords) css += "div.popup_additional_info {min-height: 82px;}";
+            else css += "div.popup_additional_info {min-height: 64px;}";
+            css += "div.popup_additional_info {padding-top: 3px !important; padding-bottom: 4px !important;}";
+            css += "div.popup_additional_info .loading_container {display: flex; justify-content: center; align-items: center;}";
+            css += "div.popup_additional_info .loading_container img {margin-right: 5px;}";
+            css += "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg {position: relative; top: 4px;}";
+            css += ".popup_additional_info .LogTotals img {vertical-align: bottom;}";
             css += ".gclh_ctoc img {width: 14px; padding: 3px 1px 0 0; float: right;}";
             css += "div.gclh_latest_log, span.gclh_cache_note {margin-top:5px;}";
             css += "div.gclh_latest_log:hover, span.gclh_cache_note:hover {position: relative;}";
@@ -13372,11 +13399,10 @@ var mainGC = function() {
             css += "div.gclh_latest_log.mouseover:hover span, span.gclh_cache_note.mouseover:hover span {visibility: visible; font-size: 13px; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
             css += 'div.gclh_latest_log.mouseover:hover span img {opacity: 1;}';
             css += 'div.gclh_latest_log:hover img, span.gclh_cache_note:hover svg {opacity: 0.5;}';
-
-            css += "span.premium_only img {margin-right:0px;}";
+            css += "span.premium_only img {margin-right: 0px; vertical-align: middle !important;}";
             css += ".map-item .send2gps img {margin-right: 0px;}";
             css += ".LogTotals, .LogTotals li {display: inline-block; margin: 0;} .LogTotals li {margin-right: 5px;}";
-            css += ".gclh_owner {max-width: 110px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: clip; text-overflow: ellipsis;}";
+            css += ".gclh_owner {max-width: 105px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: clip; text-overflow: ellipsis;}";
             appendCssStyle(css);
 
             // Create an observer instance.
@@ -13392,12 +13418,20 @@ var mainGC = function() {
                     // so we have to load informations for all caches.
                     $('#gmCacheInfo .map-item').each(function () {
                         gccode = $(this).find('.code').html();
-
                         if ($('#already_loading_' + gccode)[0]) return;
-                        $(this).find('dl dt')[0].innerHTML = "";
-                        if (browser == 'firefox') {
-                            $(this).find('h4 a')[0].title = decode_innerHTML($(this).find('h4 a')[0]).replace(/<strike>/,'').replace(/<\/strike>/,'');
+
+                        $(this).find('h4 a')[0].title = decode_innerHTML($(this).find('h4 a')[0]).replace(/<strike>/,'').replace(/<\/strike>/,'');
+                        // "Created by:" durch Owner ersetzen um Platz für die VIP ... Icons zu machen.
+                        if (settings_show_vip_list || settings_show_mail || settings_show_message) {
                             $(this).find('dl dd')[0].childNodes[0].innerHTML = '<span class="gclh_owner" title="' + $(this).find('dl dd')[0].childNodes[0].innerHTML + '">' + $(this).find('dl dd')[0].childNodes[0].innerHTML + '</span>';
+                            $(this).find('dl dt')[0].innerHTML = $(this).find('dl dd')[0].innerHTML;
+                            $(this).find('dl dt')[0].style.setProperty('font-weight', 'normal', 'important');
+                            $(this).find('dl dd')[0].innerHTML = "<span></span>";
+                            $(this).find('dl dd')[0].style.setProperty('overflow', 'visible', 'important');
+                            // Shorten the maximum length of the owner's name for events.
+                            if (settings_show_eventday && $(this).find('.gclh_owner')[0] && $(this).find('h4 img')[0] && $(this).find('h4 img')[0].src.match(/\/mapicons\/(6|453|13|7005|3653)\.png/i)) {
+                                $(this).find('.gclh_owner')[0].style.setProperty('max-width', '93px', 'important');
+                            }
                         }
 
                         // Add hidden Div, so we can know, that we are already loading data.
@@ -13519,8 +13553,8 @@ var mainGC = function() {
                                 var imgCount = a[0].innerHTML.match(/(\s*)\((\d+)\)/);
                                 if (galleryLink && imgCount && imgCount[2]) {
                                     if (imgCount[2] == "0") new_text += '<span title="No Image Gallery"><a style="color: #939597; text-decoration: none;">';
-                                    else new_text += '<span title="View Image Gallery"><a href="' + galleryLink + '">';
-                                    new_text += '<img src="/images/icons/16/photo_gallery.png" style="height: 14px; vertical-align: text-bottom;">' + imgCount[2] + '</a></span> | ';
+                                    else new_text += '<span title="View Image Gallery"><a class="gclh_galleryImages" href="' + galleryLink + '">';
+                                    new_text += '<img src="/images/icons/16/photo_gallery.png" style="height: 14px; vertical-align: text-bottom;"> ' + imgCount[2] + '</a></span> | ';
                                 }
                             }
 
@@ -13596,9 +13630,9 @@ var mainGC = function() {
                             // Add Copy to Clipboard Links.
                             if (settings_show_enhanced_map_coords) {
                                 if (original_coords != "") {
-                                    addCopyToClipboardLink(original_coords, $('#popup_additional_info_' + local_gc_code + ' span.coordinates.original .anker')[0], "original Coordinates", 'vertical-align: bottom; margin-right: -6px;');
+                                    addCopyToClipboardLink(original_coords, $('#popup_additional_info_' + local_gc_code + ' span.coordinates.original .anker')[0], "original Coordinates", 'vertical-align: bottom;');
                                 }
-                                addCopyToClipboardLink(coords, $('#popup_additional_info_' + local_gc_code + ' span.coordinates.current')[0], corrected+"Coordinates", 'vertical-align: bottom; margin-right: -6px;');
+                                addCopyToClipboardLink(coords, $('#popup_additional_info_' + local_gc_code + ' span.coordinates.current')[0], corrected+"Coordinates", 'vertical-align: bottom;');
                             }
 
                             // Get favorite score.
@@ -13642,22 +13676,78 @@ var mainGC = function() {
                         });
 
                         // Improve Original Box Content.
-                        side = $(this).find('dl dd a');
-                        guid = side.attr('href').substring(15,36+15);
-                        username = side.text();
-                        buildSendIcons(side[0], username, "per guid", guid);
-                        if (settings_show_vip_list) {
-                            var link = gclh_build_vipvup(username, global_vips, "vip");
-                            link.children[0].style.marginLeft = "5px";
-                            link.children[0].style.marginRight = "3px";
-                            side[0].appendChild(link);
-                            // Build VUP Icon.
-                            if (settings_process_vup && username != global_activ_username) {
-                                link = gclh_build_vipvup(username, global_vups, "vup");
-                                link.children[0].setAttribute("style", "margin-left: 0px; margin-right: 0px");
+                        // Align all columns to the left, don't leave so much space between the label and the content, and reduce some white space ... .
+                        $(this).find('h4').each(function () {
+                            $(this)[0].style.setProperty('margin-top', '7px', 'important');
+                            $(this)[0].style.setProperty('margin-bottom', '0px', 'important');
+                            if ($(this).find('img')[0]) {
+                                $(this).find('img')[0].style.setProperty('margin-left', '-2px', 'important');
+                            }
+                        });
+                        $(this).find('dl').each(function () {
+                            $(this)[0].style.setProperty('margin-top', '6px', 'important');
+                            $(this)[0].style.setProperty('margin-bottom', '6px', 'important');
+                            $(this)[0].style.setProperty('grid-template-columns', 'auto auto auto auto', 'important');
+                        });
+                        $(this).find('dl dt').each(function () {
+                            $(this)[0].style.setProperty('text-align', 'left', 'important');
+                        });
+                        $(this).find('dl dd').each(function () {
+                            $(this)[0].style.setProperty('text-align', 'left', 'important');
+                            $(this)[0].style.setProperty('margin-left', '0px', 'important');
+                            if ($(this).find('svg image[src*="/fave_fill_16.png"]')[0] && $(this).find('span')[0]) {
+                                $(this).find('svg')[0].style.setProperty('vertical-align', 'top', 'important');
+                                $(this).find('span')[0].style.setProperty('vertical-align', 'unset', 'important');
+                            }
+                            if ($(this).find('img[src*="images/stars/stars"]')[0]) {
+                                $(this).find('img[src*="images/stars/stars"]')[0].style.setProperty('vertical-align', 'sub', 'important');
+                            }
+                        });
+                        if ($(this).find('.links')[0]) {
+                            $(this).find('.links')[0].style.setProperty('padding-top', '6px', 'important');
+                            $(this).find('.links')[0].style.setProperty('padding-bottom', '6px', 'important');
+                            for (var i = 0; i < $(this).find('.links')[0].childNodes.length; i++) {
+                                if ($(this).find('.links')[0].childNodes[i].nodeValue) {
+                                    $(this).find('.links')[0].childNodes[i].nodeValue = $(this).find('.links')[0].childNodes[i].nodeValue.trim();
+                                }
+                            }
+                            $($(this).find('.links')[0]).find('a').each(function () {
+                                for (var i = 0; i < $(this)[0].childNodes.length; i++) {
+                                    if ($(this)[0].childNodes[i].nodeValue) {
+                                        $(this)[0].childNodes[i].nodeValue = $(this)[0].childNodes[i].nodeValue.trim();
+                                    }
+                                }
+                                $(this)[0].style.setProperty('margin-right', '5px', 'important');
+                                if ($(this).find('img')[0]) {
+                                    $(this).find('img')[0].style.setProperty('margin-right', '2px', 'important');
+                                    $(this).find('img')[0].style.setProperty('vertical-align', 'sub', 'important');
+                                }
+                            });
+                        }
+                        if ($(this).find('.links')[1]) {
+                            $(this).find('.links')[1].style.setProperty('padding-top', '6px', 'important');
+                            $(this).find('.links')[1].style.setProperty('padding-bottom', '6px', 'important');
+                        }
+                        // Build VIP, VUP, Send Icons.
+                        if (settings_show_vip_list || settings_show_mail || settings_show_message) {
+                            var side = $(this).find('dl dd span');
+                            var user = $(this).find('dl dt a');
+                            var guid = user.attr('href').substring(15,36+15);
+                            var username = user.text();
+                            buildSendIcons(side[0], username, "per guid", guid);
+                            if (settings_show_vip_list) {
+                                var link = gclh_build_vipvup(username, global_vips, "vip");
+                                link.children[0].style.marginRight = "3px";
                                 side[0].appendChild(link);
+                                // Build VUP Icon.
+                                if (settings_process_vup && username != global_activ_username) {
+                                    link = gclh_build_vipvup(username, global_vups, "vup");
+                                    link.children[0].setAttribute("style", "margin-left: 0px; margin-right: 0px");
+                                    side[0].appendChild(link);
+                                }
                             }
                         }
+                        // Build copy to clipboard link for gc code.
                         addCopyToClipboardLink(gccode, $(this).find('h4')[0], "GC Code", "float: right;");
                     });
                 });
@@ -15635,10 +15725,10 @@ var mainGC = function() {
     function hide_map_header() {
         if ($('gclh_nav')[0].style.display != "none") {
             $('gclh_nav')[0].style.display = "none";
-            $('#Content')[0].style.top = 0;
+            $('#Content')[0].style.setProperty('top', 0, 'important');
         } else {
             $('gclh_nav')[0].style.display = "block";
-            $('#Content')[0].style.top = "80px";
+            $('#Content')[0].style.setProperty('top', '80px', 'important');
         }
     }
 
@@ -15987,7 +16077,7 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/zZHw/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/krb3/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16405,8 +16495,10 @@ var mainGC = function() {
 // Alternative to event load on map. (Load event on map doesn't work always with open in new tab.)
     function isMapLoad(fkt) {
         if (waitCount == undefined) var waitCount = 0;
-        if ($('.groundspeak-control-findmylocation')[0] && $('.leaflet-control-scale')[0]) fkt();
-        else {waitCount++; if (waitCount <= 50) setTimeout(function(){isMapLoad(fkt);}, 200);}
+        if (($('.leaflet-container')[0] && $('.groundspeak-control-findmylocation')[0] && $('.leaflet-control-scale')[0]) ||
+            ($('.Map.Google')[0] && $('.gm-control-active')[0])) {
+            fkt();
+        } else {waitCount++; if (waitCount <= 50) setTimeout(function(){isMapLoad(fkt);}, 200);}
     }
 
     function insertAfter(newNode, referenceNode) {
@@ -16493,20 +16585,25 @@ var mainGC = function() {
                     $(sidebar_enhancements_addToList_buffer[gcCode])[0].title = list;
                     $(sidebar_enhancements_addToList_buffer[gcCode])[0].innerHTML = ' (' + count + ')';
                 }
-                return;
-            }
-            if (is_page("map") && (!$('#gmCacheInfo .code')[0] || ($('#gmCacheInfo .code')[0] && $('#gmCacheInfo .code')[0].innerHTML != gcCode))) {
-                return;
-            }
-            if ($('.gclh_ownBMLs_link')[0]) {
-                $('.gclh_ownBMLs_link')[0].setAttribute('title', text);
-            }
-            if ($('.gclh_ownBMLs_count')[0]) {
-                $('.gclh_ownBMLs_count')[0].setAttribute('title', list);
-                $('.gclh_ownBMLs_count')[0].innerHTML = ' (' + count + ')';
-            }
-            if (ignore && settings_show_remove_ignoring_link && $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a')[0]) {
-                changeIgnoreButton('Stop Ignoring');
+            } else if (is_page("map")) {
+                if ($('.gclh_ownBMLs_link:[data-gcrefcode="' + gcCode + '"]')[0]) {
+                    $('.gclh_ownBMLs_link:[data-gcrefcode="' + gcCode + '"]')[0].setAttribute('title', text);
+                }
+                if ($('.gclh_ownBMLs_link:[data-gcrefcode="' + gcCode + '"] .gclh_ownBMLs_count')[0]) {
+                    $('.gclh_ownBMLs_link:[data-gcrefcode="' + gcCode + '"] .gclh_ownBMLs_count')[0].setAttribute('title', list);
+                    $('.gclh_ownBMLs_link:[data-gcrefcode="' + gcCode + '"] .gclh_ownBMLs_count')[0].innerHTML = ' (' + count + ')';
+                }
+            } else if (is_page("cache_listing")) {
+                if ($('.gclh_ownBMLs_link')[0]) {
+                    $('.gclh_ownBMLs_link')[0].setAttribute('title', text);
+                }
+                if ($('.gclh_ownBMLs_count')[0]) {
+                    $('.gclh_ownBMLs_count')[0].setAttribute('title', list);
+                    $('.gclh_ownBMLs_count')[0].innerHTML = ' (' + count + ')';
+                }
+                if (ignore && settings_show_remove_ignoring_link && $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a')[0]) {
+                    changeIgnoreButton('Stop Ignoring');
+                }
             }
         });
     }
@@ -16527,9 +16624,9 @@ var mainGC = function() {
             // ermitteln dann die BMLs, gegebenenfalls auch mal ohne dass ein Update erfolgt ist.)
             if ($('.qtip.pop-modal.qtip-focus:[aria-hidden="false"] .add-menu .success, .qtip.pop-modal.qtip-focus:[aria-hidden="false"] .add-list .success')[0] ||
                 (is_page("searchmap") && qtipRunning && !$('#popover-portal-root input')[0])) {
-                if ($('.gclh_ownBMLs_count')[0]) {
+                if ((is_page("map") && $('.gclh_ownBMLs_link:[data-gcrefcode="' + gcCode + '"]')[0]) || (!is_page("map") && $('.gclh_ownBMLs_count')[0])) {
                     // Determine cache guid.
-                    var cacheGuidWptTypeID = determineCacheGuidOwnBMLs();
+                    var cacheGuidWptTypeID = determineCacheGuidOwnBMLs(gcCode);
                     // Get and display count and names of own BMLs.
                     if (cacheGuidWptTypeID) {
                         getOwnBMLs(cacheGuidWptTypeID, gcCode);
@@ -16543,17 +16640,17 @@ var mainGC = function() {
         addToListObserver.observe(document.body, config);
     }
     // Determine cache guid.
-    function determineCacheGuidOwnBMLs() {
+    function determineCacheGuidOwnBMLs(gcCode) {
         var cacheGuidWptTypeID = '';
         if (is_page("cache_listing")) var href = $('.btn-add-to-list').attr('data-href');
-        else if (is_page("map")) var href = $('.btn-add-to-list').attr('href');
+        else if (is_page("map")) var href = $('.btn-add-to-list:[data-gcrefcode="' + gcCode + '"]').attr('href');
         else if (is_page("searchmap")) var href = $('.gclh_ownBMLs_count').attr('data-href');
         if (href && href.match(/guid=(.*)$/)) {
             cacheGuidWptTypeID = href.match(/guid=(.*)$/)[1];
         }
         return cacheGuidWptTypeID;
     }
-// Improve Add to List button.
+    // Improve Add to List button.
     function improveAddToList(gcCode, cacheGuidLink) {
         if (!gcCode) var gcCode = '';
         var css = '';
@@ -16561,6 +16658,11 @@ var mainGC = function() {
             // Improve Add to List button.
             $('.btn-add-to-list')[0].innerHTML = '<a href="' + $('.btn-add-to-list').attr('data-href') + '" style="padding-left: unset;">' + $('.btn-add-to-list')[0].innerHTML + '</a>';
             css += '.CacheDetailNavigation .add_to_list_count {padding-left: 4px; color: inherit;}';
+            // Add click event to Add to List button to update Add to List info when new BML have been added.
+            $('.btn-add-to-list')[0].addEventListener("click", function() {
+                setTimeout(function(){setFocusToField(0, '#newListName');}, 0);
+                oberverForUpdateOwnBMLs(gcCode);
+            });
             // Prepare the place to display count and names of own BMLs in Add to List button.
             $('.btn-add-to-list a').addClass('gclh_ownBMLs_link');
             $('.btn-add-to-list a')[0].append($('<span class="gclh_ownBMLs_count"></span>')[0]);
@@ -16569,10 +16671,14 @@ var mainGC = function() {
             css += '.qtip.pop-modal .add-list {max-height: ' + height + 'px !important;}';
             css += '.qtip.pop-modal .add-list li button {height: 18px !important;}';
         } else if (is_page("map")) {
-            // Improve Add to List button.
+            // Add click event to Add to List button to update Add to List info when new BML have been added.
+            $('.btn-add-to-list:[data-gcrefcode="' + gcCode + '"]')[0].addEventListener("click", function() {
+                setTimeout(function(){setFocusToField(0, '#newListName');}, 0);
+                oberverForUpdateOwnBMLs(gcCode);
+            });
             // Prepare the display of count and names of own BMLs of the cache.
-            $('.btn-add-to-list').addClass('gclh_ownBMLs_link');
-            $('.btn-add-to-list')[0].append($('<span class="gclh_ownBMLs_count"></span>')[0]);
+            $('.btn-add-to-list:[data-gcrefcode="' + gcCode + '"]').addClass('gclh_ownBMLs_link');
+            $('.btn-add-to-list:[data-gcrefcode="' + gcCode + '"]')[0].append($('<span class="gclh_ownBMLs_count"></span>')[0]);
             // Improve Add to List popup.
             css += '.qtip.pop-modal .add-list {max-height: 207px !important;}';
         } else if (is_page("searchmap")) {
@@ -16599,11 +16705,6 @@ var mainGC = function() {
             css += '#popover-portal-root section ul li button, #popover-portal-root section ul li .status-icon {line-height: 18px !important; height: 18px !important;}';
         }
         if ((is_page("cache_listing") && settings_improve_add_to_list) || is_page("map")) {
-            // Add click event to Add to List button to update Add to List info when new BML have been added.
-            $('.btn-add-to-list')[0].addEventListener("click", function() {
-                setTimeout(function(){setFocusToField(0, '#newListName');}, 0);
-                oberverForUpdateOwnBMLs(gcCode);
-            });
             // Improve Add to List popup.
             css += '.qtip.pop-modal:has(.add-list) {position: absolute;}';
             css += '.qtip.pop-modal .add-menu label, .qtip.pop-modal .add-menu input::placeholder, .qtip.pop-modal .add-list-label {color: #7e7d7a !important; font-size: 12px !important;}';
@@ -16616,9 +16717,9 @@ var mainGC = function() {
             css += '.qtip.pop-modal .add-list .status.success, .qtip.pop-modal .add-list .success-message {right: 2px !important; padding: 0 15px 0px 5px !important; background-color: white !important; color: #E0B70A !important;}';
             css += '.qtip.pop-modal .add-list .status .loading {right: 12px !important;}';
         }
-        if (!css == '' && !$('#gclh_addToList')[0]) appendCssStyle(css, 'head', 'gclh_addToList');
+        if (!css == '' && !$('#gclh_addToList')[0]) appendCssStyle(css, null, 'gclh_addToList');
         // Determine cache guid.
-        var cacheGuidWptTypeID = determineCacheGuidOwnBMLs();
+        var cacheGuidWptTypeID = determineCacheGuidOwnBMLs(gcCode);
         // Get and display count and names of own BMLs.
         if (cacheGuidWptTypeID) {
             getOwnBMLs(cacheGuidWptTypeID, gcCode);
@@ -17405,7 +17506,7 @@ var mainGC = function() {
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("Woody Woodpin",        "Scirocco53",               false, false, false, true,  false);
-            var thanksLastUpdate = "23.03.2026";
+            var thanksLastUpdate = "30.03.2026";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -17661,6 +17762,9 @@ var mainGC = function() {
             html += "<div id='gclh_config_maps' class='gclh_block'>";
             html += checkboxy('settings_relocate_other_map_buttons', 'Relocate the buttons \"Search\" and \"Browse geocaches\" to other buttons above') + "<br>";
             html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging or zooming') + show_help("Displayed caches are automatically updated when the map is moved or zoomed, the 'Search this area' button no longer needs to be pressed. The behavior is therefore similar to that of the browse map.<br><br>This feature requires <a class='gclh_ref_ht_int' href=\"#settings_use_gclh_layercontrol_on_search_map\" title='Link to setting \"Replace map layers\"'>Replace map layers in Search Map</a> to be activated.") + onlySearchMap + "<br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_browsemap_compact_layout_sidebar', 'Show compact layout on sidebar') + show_help("This option makes the areas \"Search for Geocaches\" and \"Filter Caches\" and the lists \"Your Pocket Queries\" and \"Caches in Advanced Search\" in the left sidebar of the browse map more compact. Both lists will then contain approximately twice as many pocket queries or caches.") + onlyBrowseMap + "<br>";
+            html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += checkboxy('settings_searchmap_compact_layout', 'Show compact layout on cache detail screen') + show_help("If compact layout is enabled and the name of disabled caches are specially represented, the cache status line above the cache name is hidden.") + onlySearchMap + "<br>";
             html += checkboxy('settings_searchmap_disabled', 'Show name of disabled caches ') + checkboxy('settings_searchmap_disabled_strikethrough', 'strike through, in color ');
             html += "<input class='gclh_form color' type='text' size=6 id='settings_searchmap_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_disabled_color", "4A4A4A") + "'>";
@@ -17813,7 +17917,7 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_switch_to_wmtmtb_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Cache Data</b>" + "</div>";
-            html += checkboxy('settings_show_enhanced_map_popup', 'Show enhanced cache data') + show_help("With this option, additional cache data will be shown in the pop-up on the Browse Map and in the cache detail screen on the left side of the Search Map. Additional cache data are for example the latest log symbols, the elevation data, the favorites in percentage, the number of the trackables, the personal cache note and further data.") + "<br>";
+            html += checkboxy('settings_show_enhanced_map_popup', 'Show enhanced cache data') + show_help("With this option, additional cache data will be shown in the pop-up on the Browse Map and in the cache detail screen on the left side of the Search Map.<br><br>Additional cache data are for example the latest log symbols, the elevation data, the favorites in percentage, the number of the trackables, the personal cache note and further data.<br><br>The pop-up on the browse map displays a more compact layout for the entire pop-up.") + "<br>";
             html += " &nbsp; &nbsp;" + "Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map'>";
             for (var i = 1; i <= 25; i++) {
                 html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count_map == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
@@ -17931,7 +18035,7 @@ var mainGC = function() {
             for (var i = 0; i < eventCalendar.length; i++) {
                 html += "  <option value='" + eventCalendar[i] + "' " + (settings_default_calendar_link_for_event == eventCalendar[i] ? "selected='selected'" : "") + "> " + eventCalendar[i] + "</option>";
             }
-            html += "</select>" + show_help("Here you can set the default calendar for an event listing. A selection in the calendar popup in the event listing is no longer necessary.") + "<br>";
+            html += "</select>" + show_help("Here you can set the default calendar for an event listing. A selection in the calendar pop-up in the event listing is no longer necessary.") + "<br>";
             html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += checkboxy('settings_show_latest_logs_symbols', 'Show the ');
             html += "<select class='gclh_form' id='settings_show_latest_logs_symbols_count'>";
@@ -19749,6 +19853,7 @@ var mainGC = function() {
                 'settings_lists_back_to_top',
                 'settings_searchmap_autoupdate_after_dragging',
                 'settings_improve_character_counter',
+                'settings_browsemap_compact_layout_sidebar',
                 'settings_searchmap_compact_layout',
                 'settings_searchmap_disabled',
                 'settings_searchmap_disabled_strikethrough',
@@ -20569,7 +20674,7 @@ var mainGC = function() {
         css += id + ' .cff_content {margin-left: 32px; margin-bottom: -2px; margin-top: 2px; display: none;}';
         css += id + ' .cff_value {width: ' + widthValue + 'px; height: ' + heightValue + 'px;}';
         css += id + ' .cff_create {margin-left: 0px; margin-top: 2px;}';
-        appendCssStyle(css, '', ident + '_main_css');
+        appendCssStyle(css, null, ident + '_main_css');
     }
     function getLastIdNrCff(ident) {
         var id = '#' + ident + '_main';
@@ -21794,6 +21899,9 @@ function repApo(s) {
 function appendCssStyle(css, name, id) {
     if (document.getElementById(id)) return;
     if (css == "") return;
+    // In cache listings, all styles need to be located in <body>, except 'header' is explicitly requested.
+    // Otherwise GS styles may override ours (later applied styles take precedence over previous applied ones).
+    if (is_page('cache_listing') && !name) name = 'body';
     if (name) var tag = $(name)[0];
     else var tag = $('head')[0];
     var style = document.createElement('style');
