@@ -1560,6 +1560,7 @@ var mainGC = function() {
     }
 
 // Set language to default language.
+// (This only works if the language selector is present in the footer. Therefore, it doesn't work on Browse Map and on Search Map.)
     tlc('START Set language');
     try {
         var langu_string = langus_code[langus.indexOf(settings_default_langu)] + '-';
