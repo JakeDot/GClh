@@ -13,6 +13,7 @@
 <a href="#9-en">9. How can I report a bug or a feature request?</a> | <a href="#9-de">9. Wie kann ich einen Fehler melden oder eine Anfrage zu einem neuen Feature stellen?</a>
 <a href="#10-en">10. What can I do if individual features don't work or don't always work?</a> | <a href="#10-de">10. Was kann ich tun, wenn einzelne Features nicht oder nicht immer funktionieren?</a>
 <a href="#11-en">11. Information about Pocket Query Downloads.</a> | <a href="#11-de">11. Informationen zu Pocket Query Downloads.</a>
+<a href="#12-en">12. What should be considered when using the Geocaching Map Enhancement (GME) script simultaneously?</a> | <a href="#12-de">12. Was ist zu beachten bei der gleichzeitigen Nutzung des Skriptes Geocaching Map Enhancements (GME)?</a>
 
 ---
 <a id="en" href="#en"><img src="../images/flag_en.png"></a>
@@ -204,6 +205,12 @@ In the browsers Mozilla Firefox, Google Chrome, and Microsoft Edge, all settings
 	</li>
 </ul>
 <br>
+
+<a id="12-en"></a>
+## 12. What should be considered when using the Geocaching Map Enhancement (GME) script simultaneously?
+<a id="12.1-en"></a>
+1. Using map layers from GME or GClh:<br>To use map layers from GME, you must disable map layer processing in GClh. To do this, disable the parameter <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_gclh_layercontrol_on_browse_map" title="Link to your GClh II Config">Replace map layers in Browse Map</a>. To use map layers from GClh, this parameter must remain enabled.<br>
+<br>
 <br>
 
 ---
@@ -394,4 +401,10 @@ Bei den Browsern Mozilla Firefox, Google Chrome und Microsoft Edge mit dem Skrip
 		Im Skripmanager muss der Download Modus auf "Browser API" eingestellt werden.
 	</li>
 </ul>
+<br>
+
+<a id="12-de"></a>
+## 12. Was ist zu beachten bei der gleichzeitigen Nutzung des Skriptes Geocaching Map Enhancements (GME)?
+<a id="12.1-de"></a>
+1. Nutzung der Karten Layer von GME oder GClh:<br>Wenn die Karten Layer von GME genutzt werden sollen, muss die Verarbeitung der Karten Layer im GClh deaktiviert werden. Dazu muss der Parameter <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_gclh_layercontrol_on_browse_map" title="Link to your GClh II Config">Replace map layers in Browse Map</a> deaktiviert werden. Wenn die Karten Layer vom GClh genutzt werden sollen, muss dieser Parameter aktiviert bleiben.<br>
 <br>
