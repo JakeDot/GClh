@@ -47,24 +47,29 @@
 <ul>
 	<li>
 		<strong>Note:</strong> [Browse Map] Problem displaying a map from GME. [<a href="https://github.com/2Abendsegler/GClh/issues/3058" title="Issue 3058">3058</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		...<br>
-		<img src="../images/0.18.2/Screen01.jpg" alt="Screen01.jpg"><br><br>
+		If GME is used and the map layers from GME should be used, please refer to <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#12-en" title="FAQ (GitHub)">FAQ 12</a>.<br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Global] Header menue. [<a href="https://github.com/2Abendsegler/GClh/issues/3059" title="Issue 3059">3059</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
-		...<br>
-		<img src="../images/0.18.2/Screen01.jpg" alt="Screen01.jpg"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#..." title="Link to your GClh II Config">Settings -> Global:<br>
-		<img src="../images/0.18.2/Screen01.jpg" alt="Screen01.jpg"></a><br>
-		If you want to use this feature, you have to activate it.<br><br>
+		The header menus and their alignment have been revised.<br>
+		This includes the somewhat neglected horizontal menu, where GC menus can now be fully integrated. The menus can be displayed in one, two, or three lines. In addition to the links from the Linklist, you can add your own links and you can give all links your own names, including abbreviations, to fit as many links as possible in the header.<br><br>
+		Here are a few examples of horizontal menus:<br>
+		<img src="../images/0.18.2/Screen07.jpg" alt="Screen07.jpg"><br>
+		<img src="../images/0.18.2/Screen08.jpg" alt="Screen08.jpg"><br>
+		<img src="../images/0.18.2/Screen09.jpg" alt="Screen09.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_bookmarks_top_menu_h" title="Link to your GClh II Config">Settings -> Linklist and Navigation:<br>
+		<img src="../images/0.18.2/Screen10.jpg" alt="Screen10.jpg"></a><br>
+		If you want to use this feature, you have to activate it.<br>
+		(You can find the settings for the vertical menus above.)<br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Browse Map] Compact layout on sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/3065" title="Issue 3065">3065</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		...<br>
-		<img src="../images/0.18.2/Screen01.jpg" alt="Screen01.jpg"><br>
+		<strong>New:</strong> [Browse Map] Compact layout on sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/3072" title="Issue 3072">3072</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		This option makes the areas "Search for Geocaches" and "Filter Caches" and the lists "Your Pocket Queries" and "Caches in Advanced Search" in the left sidebar of the browse map more compact. Both lists will then contain approximately twice as many pocket queries or caches.
+<br><br>
+		Here for example the "Caches in Advanced Search" (caches in a pocket query). More information can be found in the <a href="https://github.com/2Abendsegler/GClh/issues/3072" title="Issue 3072">issue 3072</a>.
+		<img src="../images/0.18.2/Screen05.jpg" alt="Screen05.jpg"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#..." title="Link to your GClh II Config">Settings -> Browse Map:<br>
-		<img src="../images/0.18.2/Screen01.jpg" alt="Screen01.jpg"></a><br>
-		If you want to use this feature, you have to activate it.<br><br>
+		<img src="../images/0.18.2/Screen06.jpg" alt="Screen06.jpg"></a><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Cache Listing, Config] No longer displayed correctly. [<a href="https://github.com/2Abendsegler/GClh/issues/3063" title="Issue 3063">3063</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
