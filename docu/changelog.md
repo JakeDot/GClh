@@ -68,7 +68,7 @@
 <br><br>
 		Here for example the "Caches in Advanced Search". More information can be found in the <a href="https://github.com/2Abendsegler/GClh/issues/3072" title="Issue 3072">issue 3072</a>.
 		<img src="../images/0.18.2/Screen05.jpg" alt="Screen05.jpg"><br><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#..." title="Link to your GClh II Config">Settings -> Browse Map:<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_browsemap_compact_layout_sidebar" title="Link to your GClh II Config">Settings -> Browse Map:<br>
 		<img src="../images/0.18.2/Screen06.jpg" alt="Screen06.jpg"></a><br><br>
 	</li>
 	<li>
