@@ -77,7 +77,7 @@
 		<strong>Fix:</strong> [Cache Listing, Config] No longer displayed correctly. [<a href="https://github.com/2Abendsegler/GClh/issues/3063" title="Issue 3063">3063</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Cache Listing] Latest logs above with wrong alinment. [<a href="https://github.com/2Abendsegler/GClh/issues/3077" title="Issue 3077">3077</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		<strong>Fix:</strong> [Cache Listing] Latest logs above with wrong alinment. [<a href="https://github.com/2Abendsegler/GClh/issues/3077" title="Issue 3077">3077</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Browse Map] Restore features and appearance of the cache detail pop-up after the last website changes. [<a href="https://github.com/2Abendsegler/GClh/issues/3064" title="Issue 3064">3064</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
