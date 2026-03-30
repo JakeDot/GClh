@@ -774,6 +774,7 @@ pre {
     background: unset;
     background-image: none;
     margin: 0;
+    outline: none;
 }
 .gclh_content input,
 .gclh_content textarea,
