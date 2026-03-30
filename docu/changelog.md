@@ -1,3 +1,4 @@
+<a href="#v0182" title="GClh II version 0.18.2 (31.03.2026)">v0.18.2</a> &nbsp;
 <a href="#v0181" title="GClh II version 0.18.1 (23.03.2026)">v0.18.1</a> &nbsp;
 <a href="#v018" title="GClh II version 0.18 (15.03.2026)">v0.18</a> &nbsp;
 <a href="#v01714" title="GClh II version 0.17.14 (16.02.2026)">v0.17.14</a> &nbsp;
@@ -39,6 +40,64 @@
 <a href="#v015" title="GClh II version 0.15 (26.11.2023)">v0.15</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.18.2:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Note:</strong> [Browse Map] Problem displaying a map from GME. [<a href="https://github.com/2Abendsegler/GClh/issues/3058" title="Issue 3058">3058</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		...<br>
+		<img src="../images/0.18.2/Screen01.jpg" alt="Screen01.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Header menue. [<a href="https://github.com/2Abendsegler/GClh/issues/3059" title="Issue 3059">3059</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		...<br>
+		<img src="../images/0.18.2/Screen01.jpg" alt="Screen01.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#..." title="Link to your GClh II Config">Settings -> Global:<br>
+		<img src="../images/0.18.2/Screen01.jpg" alt="Screen01.jpg"></a><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Browse Map] Compact layout on sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/3065" title="Issue 3065">3065</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		...<br>
+		<img src="../images/0.18.2/Screen01.jpg" alt="Screen01.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#..." title="Link to your GClh II Config">Settings -> Browse Map:<br>
+		<img src="../images/0.18.2/Screen01.jpg" alt="Screen01.jpg"></a><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing, Config] No longer displayed correctly. [<a href="https://github.com/2Abendsegler/GClh/issues/3063" title="Issue 3063">3063</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Restore features and appearance of the cache detail pop-up after the last website changes. [<a href="https://github.com/2Abendsegler/GClh/issues/3064" title="Issue 3064">3064</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Correct the relocation of button "Search geocaches". [<a href="https://github.com/2Abendsegler/GClh/issues/3061" title="Issue 3061">3061</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Enable Linklist, config and sync scrolling on Browse Map again. [<a href="https://github.com/2Abendsegler/GClh/issues/3060" title="Issue 3060">3060</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Correct feature "Hide header". [<a href="https://github.com/2Abendsegler/GClh/issues/3062" title="Issue 3062">3062</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] "Add to List" info in button doesn't work if more then one cache is in pop-up. [<a href="https://github.com/2Abendsegler/GClh/issues/3056" title="Issue 3056">3056</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Hide sidebar by default doesn't work at map preference "Google maps". [<a href="https://github.com/2Abendsegler/GClh/issues/3069" title="Issue 3069">3069</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Make hide header feature also available at map preference "Google maps". [<a href="https://github.com/2Abendsegler/GClh/issues/3068" title="Issue 3068">3068</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] Prevent borders and shadows in config input fields. [<a href="https://github.com/2Abendsegler/GClh/issues/3070" title="Issue 3070">3070</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(31.03.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.18.1:
