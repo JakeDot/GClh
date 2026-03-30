@@ -2552,7 +2552,7 @@ var mainGC = function() {
                         ul.innerHTML += $(this)[0].outerHTML;
                     });
                     div.appendChild(ul);
-                    $('#ctl00_ContentBody_size')[0].parentNode.insertBefore(div, $('#ctl00_ContentBody_size')[0].nextSibling.nextSibling.nextSibling);
+                    $('#ctl00_ContentBody_size')[0].parentNode.after(div);
                     appendCssStyle('.gclh_LogTotals {float: right;} .gclh_LogTotals li {display: inline;} .gclh_LogTotals img {vertical-align: bottom;} .gclh_LogTotals li + li {margin-left: 10px;} .gclh_LogTotals ul {margin-bottom: 0px;}');
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForLogTotals(waitCount);}, 100);}
             }
