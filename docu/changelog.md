@@ -60,13 +60,13 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_bookmarks_top_menu_h" title="Link to your GClh II Config">Settings -> Linklist and Navigation:<br>
 		<img src="../images/0.18.2/Screen10.jpg" alt="Screen10.jpg"></a><br>
 		If you want to use this feature, you have to activate it.<br>
-		(You can find the settings for the vertical menus above.)<br><br>
+		(You can find the settings for the vertical menus above these settings.)<br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Browse Map] Compact layout on sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/3072" title="Issue 3072">3072</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		This option makes the areas "Search for Geocaches" and "Filter Caches" and the lists "Your Pocket Queries" and "Caches in Advanced Search" in the left sidebar of the browse map more compact. Both lists will then contain approximately twice as many pocket queries or caches.
+		This option makes the areas "Search for Geocaches" and "Filter Caches" and the lists "Your Pocket Queries" and "Caches in Advanced Search" (these are the caches in a pocket query) in the left sidebar of the browse map more compact. Both lists will then contain approximately twice as many pocket queries or caches.
 <br><br>
-		Here for example the "Caches in Advanced Search" (caches in a pocket query). More information can be found in the <a href="https://github.com/2Abendsegler/GClh/issues/3072" title="Issue 3072">issue 3072</a>.
+		Here for example the "Caches in Advanced Search". More information can be found in the <a href="https://github.com/2Abendsegler/GClh/issues/3072" title="Issue 3072">issue 3072</a>.
 		<img src="../images/0.18.2/Screen05.jpg" alt="Screen05.jpg"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#..." title="Link to your GClh II Config">Settings -> Browse Map:<br>
 		<img src="../images/0.18.2/Screen06.jpg" alt="Screen06.jpg"></a><br><br>
