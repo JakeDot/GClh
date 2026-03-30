@@ -208,8 +208,8 @@ In the browsers Mozilla Firefox, Google Chrome, and Microsoft Edge, all settings
 
 <a id="12-en"></a>
 ## 12. What should be considered when using the Geocaching Map Enhancement (GME) script simultaneously?
-<a id="12.1-en"></a>1. Using map layers from GME or GClh:<br>
-To use map layers from GME, you must disable map layer processing in GClh. To do this, disable the parameter <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_gclh_layercontrol_on_browse_map" title="Link to your GClh II Config">Replace map layers in Browse Map</a>.<br>
+<a id="12.1-en"></a>1. Using map layers from GME or GClh:
+To use map layers from GME, you must disable map layer processing in GClh. To do this, disable the parameter <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_gclh_layercontrol_on_browse_map" title="Link to your GClh II Config">Replace map layers in Browse Map</a>.
 To use map layers from GClh, this parameter must remain enabled.<br>
 <br>
 <br>
@@ -406,7 +406,7 @@ Bei den Browsern Mozilla Firefox, Google Chrome und Microsoft Edge mit dem Skrip
 
 <a id="12-de"></a>
 ## 12. Was ist zu beachten bei der gleichzeitigen Nutzung des Skriptes Geocaching Map Enhancements (GME)?
-<a id="12.1-de"></a>1. Nutzung der Karten Layer von GME oder GClh:<br>
-Wenn die Karten Layer von GME genutzt werden sollen, muss die Verarbeitung der Karten Layer im GClh deaktiviert werden. Dazu muss der Parameter <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_gclh_layercontrol_on_browse_map" title="Link to your GClh II Config">Replace map layers in Browse Map</a> deaktiviert werden.<br>
+<a id="12.1-de"></a>1. Nutzung der Karten Layer von GME oder GClh:
+Wenn die Karten Layer von GME genutzt werden sollen, muss die Verarbeitung der Karten Layer im GClh deaktiviert werden. Dazu muss der Parameter <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_gclh_layercontrol_on_browse_map" title="Link to your GClh II Config">Replace map layers in Browse Map</a> deaktiviert werden.
 Wenn die Karten Layer vom GClh genutzt werden sollen, muss dieser Parameter aktiviert bleiben.<br>
 <br>
