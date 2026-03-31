@@ -12946,7 +12946,7 @@ var mainGC = function() {
                     $('#searchtabs').append('<a class="gclh_hideMapHeader" href="#">Hide/Show Header</a>');
                     $('.gclh_hideMapHeader')[0].addEventListener("click", hide_map_header, false);
                     var css = '';
-                    css += '.gclh_hideMapHeader {text-decoration-line: none;} .gclh_hideMapHeader:hover {text-decoration-line: underline;}';
+                    css += '.gclh_hideMapHeader {text-decoration-line: none; color: rgb(61, 118, 197);} .gclh_hideMapHeader:hover {text-decoration-line: underline;}';
                     // Link in Sidebar rechts orientieren wegen möglichem GC Tour Icon.
                     css += '.gclh_hideMapHeader {float: right; padding-right: 3px;}';
                     // Link in Sidebar komplett anzeigen und auch nicht mehr überblenden, auch nicht durch GME.
