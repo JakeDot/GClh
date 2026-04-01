@@ -1730,11 +1730,9 @@ var mainGC = function() {
                     $('#ctl00_uxLoginStatus_divSignedIn li.li-user:not(#pgc_gclh)').toggleClass('gclh_open');
                     // At least on the Browse Map, the class 'user-expanded' is additionally set, but not removed, therefore the menu remains
                     // when you click on it a second time.
-                    if (!$('#ctl00_uxLoginStatus_divSignedIn li.li-user:not(#pgc_gclh)').hasClass('gclh_open')) {
-                        setTimeout(function(){
-                            $('#ctl00_uxLoginStatus_divSignedIn li.li-user:not(#pgc_gclh) ul.submenu').removeClass('user-expanded');
-                        }, 0);
-                    }
+                    setTimeout(function(){
+                        $('#ctl00_uxLoginStatus_divSignedIn li.li-user:not(#pgc_gclh) ul.submenu').removeClass('user-expanded');
+                    }, 0);
                 });
                 // Disable user profile menu by clicking anywhere else.
                 $(document).click(function(){
