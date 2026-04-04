@@ -4,8 +4,8 @@
 //--> $$000
 // @version      0.18.2
 //<-- $$000
-// @copyright    2016-2026 2Abendsegler, 2019-2026 capoaira, 2025-2026 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
-// @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
+// @copyright    2016-2026 2Abendsegler, 2019-2026 capoaira, 2025-2026 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove), 2026 JakeDot
+// @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen; JakeDot
 // @license      GNU General Public License v2.0
 // @supportURL   https://github.com/2Abendsegler/GClh/issues
 // @namespace    http://www.amshove.net
